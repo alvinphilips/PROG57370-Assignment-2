@@ -179,7 +179,7 @@
     <ClCompile Include="NetworkClient.cpp" />
     <ClCompile Include="NetworkRPC.cpp" />
     <ClCompile Include="NetworkServer.cpp" />
-    <ClCompile Include="Renderable.cpp" />
+    <ClCompile Include="IRenderable.cpp" />
     <ClCompile Include="json.cpp" />
     <ClCompile Include="mersenne.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -216,7 +216,7 @@
     <ClInclude Include="NetworkCommon.h" />
     <ClInclude Include="NetworkRPC.h" />
     <ClInclude Include="NetworkServer.h" />
-    <ClInclude Include="Renderable.h" />
+    <ClInclude Include="IRenderable.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="EngineTime.h" />

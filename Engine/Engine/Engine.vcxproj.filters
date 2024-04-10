@@ -111,7 +111,7 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Renderable.cpp">
+    <ClCompile Include="IRenderable.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
@@ -227,7 +227,7 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Renderable.h">
+    <ClInclude Include="IRenderable.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="NetworkServer.h">

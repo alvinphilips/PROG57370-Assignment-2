@@ -1,13 +1,13 @@
 #include "EngineCore.h"
-#include "Renderable.h"
+#include "IRenderable.h"
 #include "RenderSystem.h"
 
-Renderable::Renderable()
+IRenderable::IRenderable()
 {
 	RenderSystem::Instance().AddRenderable(this);
 }
 
-Renderable::~Renderable()
+IRenderable::~IRenderable()
 {
 	RenderSystem::Instance().RemoveRenderable(this);
 }
