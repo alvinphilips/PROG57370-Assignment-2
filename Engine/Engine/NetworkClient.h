@@ -22,6 +22,7 @@ protected:
 	void Initialize();
 	void Update();
 
+
 private:
 	void LoadSettings();
 	void WaitingForFirstPacket();
@@ -35,6 +36,7 @@ private:
 
 	RakNet::RakPeerInterface* rakInterface;
 	RakNet::RakNetGUID serverGUID;
+	void SendPacket(RakNet::BitStream& bs);
 
 	friend class Engine;
 };

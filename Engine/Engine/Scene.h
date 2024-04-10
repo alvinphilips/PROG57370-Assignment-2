@@ -41,6 +41,8 @@ protected:
 	void Update();
 	void PostUpdate();
 
+	void InvokeRPC(RakNet::BitStream& bitStream);
+
 private:
 	// Only enabled scenes get updated & rendered
 	bool isEnabled = true;
