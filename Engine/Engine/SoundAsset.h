@@ -21,4 +21,4 @@ private:
     Mix_Chunk* sound = nullptr;
 };
 
-#endif // !_SOUND_ASSET_H_
+#endif

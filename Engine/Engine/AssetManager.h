@@ -51,4 +51,4 @@ private:
 	std::map<STRCODE, AssetMapEntry> assets;
 };
 
-#endif // !_ASSET_MANAGER_H_
+#endif

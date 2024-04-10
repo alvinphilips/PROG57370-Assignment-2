@@ -31,12 +31,15 @@ void FontAsset::Load(json::JSON& node)
 	}
 }
 
-void FontAsset::SetFontSize(int size) const
+void FontAsset::SetFontSize(const uint32_t size)
 {
+#ifndef STRIP_NULL_CHECKS
 	if (font == nullptr)
 	{
 		LOG("ERROR: Font not set");
 		return;
 	}
+#endif
+	font_size = size;
 	TTF_SetFontSize(font, size);
 };

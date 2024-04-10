@@ -6,6 +6,7 @@ IMPLEMENT_DYNAMIC_CLASS(SoundAsset)
 void SoundAsset::Destroy()
 {
 	Asset::Destroy();
+
 	Mix_FreeChunk(sound);
 	sound = nullptr;
 }

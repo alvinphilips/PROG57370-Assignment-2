@@ -1,6 +1,6 @@
 #pragma once
 
-#ifndef  _TEXTURE_ASSET_H_
+#ifndef _TEXTURE_ASSET_H_
 #define _TEXTURE_ASSET_H_
 
 #include "Asset.h"
@@ -22,8 +22,8 @@ protected:
 
 private:
     SDL_Texture* texture = nullptr;
-    int width = 1;
-    int height = 1;
+    int32_t width = 1;
+    int32_t height = 1;
 };
 
-#endif // !_TEXTURE_ASSET_H_
+#endif
