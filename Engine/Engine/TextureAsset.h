@@ -6,6 +6,22 @@
 #include "Asset.h"
 #include "SDL_image.h"
 
+#ifdef DEBUG_ASSET_INIT
+#define DEBUG_TEXTURE_INIT
+#endif
+
+#ifdef DEBUG_ASSET_LOAD
+#define DEBUG_TEXTURE_LOAD
+#endif
+
+#ifdef NDEBUG_TEXTURE_INIT
+#undef DEBUG_TEXTURE_INIT
+#endif
+
+#ifdef NDEBUG_TEXTURE_LOAD
+#undef DEBUG_TEXTURE_LOAD
+#endif
+
 class TextureAsset final : public Asset 
 {
     DECLARE_DYNAMIC_DERIVED_CLASS(TextureAsset, Asset)
