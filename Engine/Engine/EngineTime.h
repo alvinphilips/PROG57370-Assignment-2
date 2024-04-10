@@ -10,9 +10,9 @@ class Time final
 	DECLARE_SINGLETON(Time)
 
 public:
-	float DeltaTime() const { return deltaTime.count(); }
-	float TotalTime() const { return totalTime.count(); }
-	unsigned int FrameCount() const { return frameCount; }
+	float DeltaTime() const { return delta_time.count(); }
+	float TotalTime() const { return total_time.count(); }
+	unsigned int FrameCount() const { return frame_count; }
 
 private:
 	void Initialize();
@@ -20,11 +20,11 @@ private:
 	void Destroy();
 
 private:
-	unsigned int frameCount = 0;
-	std::chrono::duration<float> deltaTime = std::chrono::duration<float>(0.0f);
-	std::chrono::duration<float> totalTime = std::chrono::duration<float>(0.0f);
-	std::chrono::time_point<std::chrono::system_clock> beginTime;
-	std::chrono::time_point<std::chrono::system_clock> endTime;
+	unsigned int frame_count = 0;
+	std::chrono::duration<float> delta_time = std::chrono::duration<float>(0.0f);
+	std::chrono::duration<float> total_time = std::chrono::duration<float>(0.0f);
+	std::chrono::time_point<std::chrono::system_clock> begin_time;
+	std::chrono::time_point<std::chrono::system_clock> end_time;
 
 	friend class Engine;
 };
