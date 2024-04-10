@@ -10,6 +10,16 @@ void FontAsset::Initialize()
 
 	TTF_Init();
 	font = TTF_OpenFont(filepath.c_str(), font_size);
+
+#ifdef DEBUG_FONT_INIT
+	if (font == nullptr)
+	{
+		LOG(TTF_GetError());
+	} else
+	{
+		LOG("Font asset: " << TTF_FontFaceFamilyName(font));
+	}
+#endif
 }
 
 void FontAsset::Destroy()

@@ -6,6 +6,14 @@
 #include "Asset.h"
 #include "SDL_ttf.h"
 
+#ifdef DEBUG_ASSET_INIT
+#define DEBUG_FONT_INIT
+#endif
+
+#ifdef NDEBUG_FONT_INIT
+#undef DEBUG_FONT_INIT
+#endif
+
 class FontAsset final : public Asset
 {
     DECLARE_DYNAMIC_DERIVED_CLASS(FontAsset, Asset)
@@ -16,8 +24,8 @@ public:
 
 protected:
     void Initialize() override;
-    void Destroy() override;
     void Load(json::JSON&) override;
+    void Destroy() override;
 
 private:
     TTF_Font* font = nullptr;
