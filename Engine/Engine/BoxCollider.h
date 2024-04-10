@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _BOXCOLLIDER_H_
-#define _BOXCOLLIDER_H_
+#ifndef _BOX_COLLIDER_H_
+#define _BOX_COLLIDER_H_
 
 #include"EngineCore.h"
 #include"Collider.h"

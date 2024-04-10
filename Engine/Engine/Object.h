@@ -36,4 +36,4 @@ protected:
     STRCODE uid = -1;
 };
 
-#endif // !_OBJECT_H_
+#endif

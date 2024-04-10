@@ -1,5 +1,8 @@
 #pragma once
-#include "Engine.h"
+
+#ifndef _ENGINE_INPUT_H_
+#define _ENGINE_INPUT_H_
+
 #include <SDL_keycode.h>
 #include <SDL.h>
 
@@ -60,4 +63,4 @@ private:
 
 };
 
-
+#endif

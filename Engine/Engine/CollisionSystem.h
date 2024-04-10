@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _COLLISIONSYSTEM_H
-#define _COLLISIONSYSTEM_H
+#ifndef _COLLISION_SYSTEM_H_
+#define _COLLISION_SYSTEM_H_
 
 #include "EngineCore.h"
 #include "SDL.h"

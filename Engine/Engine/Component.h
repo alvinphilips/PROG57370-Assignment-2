@@ -35,4 +35,4 @@ protected:
     friend class Entity;
 };
 
-#endif // !_COMPONENT_H_
+#endif

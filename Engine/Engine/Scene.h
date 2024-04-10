@@ -1,19 +1,14 @@
-// @file: Scene.h
-//
-// @brief: Header file for the Scene class. All entities are part of a Scene.
-//
-// @author: Divyanshu N Singh (DNS)
-// @date: 2023-11-29
-
 #pragma once
+
 #ifndef _SCENE_H_
+#define _SCENE_H_
 
 class Entity;
 
 class Scene final : public Object
 {
 public:
-	bool IsEnabled() { return isEnabled; }
+	bool IsEnabled() const { return isEnabled; }
 	void SetEnabled(bool enabled) { isEnabled = enabled; }
 	Entity* CreateEntity();
 	Entity* FindEntity(std::string entityGuid);
@@ -58,4 +53,4 @@ private:
 	friend class SceneManager;
 };
 
-#endif // !_SCENE_H_
+#endif

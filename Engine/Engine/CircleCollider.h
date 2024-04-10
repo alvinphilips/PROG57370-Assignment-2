@@ -1,6 +1,7 @@
 #pragma once
-#ifndef _CIRCLECOLLIDER_H_
-#define _CIRCLECOLLIDER_H_
+
+#ifndef _CIRCLE_COLLIDER_H_
+#define _CIRCLE_COLLIDER_H_
 
 #include"EngineCore.h"
 #include"Collider.h"

@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef _TRANSFORM_H_
+#define _TRANSFORM_H_
+
 #include "Component.h"
 #include "EngineMath.h"  
 
@@ -24,3 +27,5 @@ public:
     float rotation; ///< The rotation of the entity, in degrees or radians.
     Vec2 scale; ///< The scale of the entity.
 };
+
+#endif

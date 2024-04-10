@@ -1,8 +1,8 @@
 #pragma once
+
 #ifndef _ASSET_MANAGER_H_
 #define _ASSET_MANAGER_H_
 
-#include <list>
 #include "Asset.h"
 
 struct AssetMapEntry
