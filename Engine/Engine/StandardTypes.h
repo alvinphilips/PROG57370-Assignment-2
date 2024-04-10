@@ -162,7 +162,9 @@ private:\
 	className() = default;\
 	~className() = default;\
 	inline explicit className(className const&) = delete;\
-	inline className& operator=(className const&) = delete;
+	inline explicit className(className &&) = delete;\
+	inline className& operator=(className const&) = delete;\
+	inline className& operator=(className &&) = delete;
 
 #endif
 
