@@ -3,14 +3,14 @@
 #ifndef _FONT_SPRITE_H_
 #define _FONT_SPRITE_H_
 
-#include "Renderable.h"
+#include "Sprite.h"
 #include "SDL.h"
 
 class FontAsset;
 
-class FontSprite : public Renderable
+class FontSprite : public Sprite
 {
-	DECLARE_DYNAMIC_DERIVED_CLASS(FontSprite, Component)
+	DECLARE_DYNAMIC_DERIVED_CLASS(FontSprite, Sprite)
 
 public:
 	void SetText(std::string text);
@@ -24,16 +24,13 @@ protected:
 
 	void Save(json::JSON&) const;
 	void Load(json::JSON&) override;
-	void Update() override;
 
 private:
 	void RegenerateOutput();
 
 private:
-	IVec2 outputSizing = { 0, 0 };
 	std::string text = "DEFAULT TEXT";
 	FontAsset* font = nullptr;
-	SDL_Rect fontRect = { 0,0,250,250 };
 	SDL_Texture* output = nullptr;
 	SDL_Color fontColor = { 255,255,255,255 };
 };

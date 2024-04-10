@@ -26,6 +26,7 @@ protected:
 	void Destroy() override;
 	void Update() override;
 	void Render() override;
+	SDL_RendererFlip SetFlipFromScale(const Vec2 scale);
 
 protected:
 	SDL_Rect targetRect = { 0,0,0,0 };

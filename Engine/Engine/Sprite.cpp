@@ -28,7 +28,7 @@ void Sprite::Update()
         size.y
     };
 
-    flip = static_cast<SDL_RendererFlip>((transform.scale.x < 0) | ((transform.scale.y < 0) << 1));
+	SetFlipFromScale(transform.scale);
 }
 
 void Sprite::SerializeCreate(RakNet::BitStream& bitStream) const
@@ -52,7 +52,7 @@ void Sprite::DeserializeCreate(RakNet::BitStream& bitStream)
 
     STRCODE texAsset = 0;
     bitStream.Read(texAsset);
-    TextureAsset* asset = (TextureAsset*)AssetManager::Instance().GetAsset(texAsset);
+    TextureAsset* asset = AssetManager::Instance().GetAsset<TextureAsset>(texAsset);
     SetTextureAsset(asset);
 }
 
@@ -63,7 +63,7 @@ void Sprite::Load(json::JSON& node)
     {
         const std::string tex_asset_guid = node["Texture"].ToString();
         LOG("Trying to load Texture: " << tex_asset_guid);
-        SetTextureAsset((TextureAsset*)(AssetManager::Instance().GetAsset(tex_asset_guid)));
+        SetTextureAsset(AssetManager::Instance().GetAsset<TextureAsset>(tex_asset_guid));
     }
 }
 
@@ -105,4 +105,11 @@ void Sprite::Render()
         flip
     );
     SDL_SetTextureColorMod(texture, 255, 255, 255);
+}
+
+SDL_RendererFlip Sprite::SetFlipFromScale(const Vec2 scale)
+{
+    flip = static_cast<SDL_RendererFlip>((scale.x < 0) | ((scale.y < 0) << 1));
+
+    return flip;
 }
