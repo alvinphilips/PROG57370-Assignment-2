@@ -12,7 +12,7 @@ void Player::Initialize()
 {
 	Component::Initialize();
 	start_pos = owner->GetTransform().position;
-	collider = (BoxCollider*)owner->GetComponent("BoxCollider");
+	collider = owner->GetComponent<BoxCollider>();
 }
 
 void Player::Update() 
@@ -23,8 +23,8 @@ void Player::Update()
 	if (input.IsKeyPressed(SDLK_KP_ENTER) && networkedEntity == nullptr)
 	{
 		networkedEntity = SceneManager::Instance().CreateEntity();
-		Sprite* sprite = (Sprite*)networkedEntity->CreateComponent("Sprite");
-		TextureAsset* asset = (TextureAsset*)AssetManager::Instance().GetAsset("Explosion_435e0fce-7b11-409c-858e-af4bd7fe99c0");
+		Sprite* sprite = networkedEntity->CreateComponent<Sprite>();
+		TextureAsset* asset = AssetManager::Instance().GetAsset<TextureAsset>("Explosion_435e0fce-7b11-409c-858e-af4bd7fe99c0");
 		sprite->SetTextureAsset(asset);
 	}
 

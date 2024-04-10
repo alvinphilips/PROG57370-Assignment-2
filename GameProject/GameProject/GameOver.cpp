@@ -1,6 +1,8 @@
 #include "GameCore.h"
 #include "GameOver.h"
 
+#include "SoundAsset.h"
+
 IMPLEMENT_DYNAMIC_CLASS(GameOver)
 
 void GameOver::Initialize()
@@ -47,7 +49,7 @@ void GameOver::Load(json::JSON& node)
     if (node.hasKey("Sound"))
     {
 	    const std::string sound_asset_guid = node["Sound"].ToString();
-	    sound_fx = (SoundAsset*)(AssetManager::Instance().GetAsset(sound_asset_guid));
+	    sound_fx = AssetManager::Instance().GetAsset<SoundAsset>(sound_asset_guid);
     }
 
     if (node.hasKey("SceneLoadDelay"))

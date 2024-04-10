@@ -275,29 +275,3 @@ bool Entity::RemoveComponent(const Component* component)
 	}
 	return false;
 }
-
-template <typename T>
-T* Entity::GetComponent() const
-{
-	return GetComponent(T::GetClassNameW());
-}
-
-template <typename T>
-bool Entity::HasComponent() const
-{
-	return HasComponent(T::GetDerivedClassName());
-}
-
-template <typename T>
-T* Entity::CreateComponent() {
-	T* component = new T();
-	component->owner = this;
-	componentsToAdd.push_back(component);
-	return component;
-}
-
-template <typename T>
-bool Entity::RemoveComponent()
-{
-	return RemoveComponent(T::GetClassNameW());
-}

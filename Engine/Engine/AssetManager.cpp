@@ -133,18 +133,6 @@ Asset* AssetManager::GetAsset(STRCODE id)
 	return nullptr;
 }
 
-template <typename T>
-T* AssetManager::GetAsset(std::string guid)
-{
-	return (T*) GetAsset(guid);
-}
-
-template <typename T>
-T* AssetManager::GetAsset(STRCODE id)
-{
-	return (T*) GetAsset(id);
-}
-
 void AssetManager::RemoveAsset(std::string guid)
 {
 	STRCODE id = GetHashCode(guid.c_str());

@@ -11,7 +11,7 @@ struct AssetMapEntry
 	unsigned int ref_count;
 };
 
-class AssetManager 
+class AssetManager
 {
 	DECLARE_SINGLETON(AssetManager)
 
@@ -29,9 +29,16 @@ public:
 	Asset* GetAsset(STRCODE id);
 
 	template <typename T = Asset>
-	T* GetAsset(std::string guid);
+	T* GetAsset(std::string guid)
+	{
+		return (T*)GetAsset(guid);
+	}
+
 	template <typename T = Asset>
-	T* GetAsset(STRCODE id);
+	T* GetAsset(STRCODE id)
+	{
+		return (T*)GetAsset(id);
+	}
 
 	void RemoveAsset(std::string guid);
 	void RemoveAsset(STRCODE id);

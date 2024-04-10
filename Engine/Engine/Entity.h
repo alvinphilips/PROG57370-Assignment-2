@@ -25,13 +25,27 @@ public:
 	Scene* GetParentScene() const { return ownerScene; }
 
 	template <typename T = Component>
-	bool HasComponent() const;
+	T* GetComponent() const
+	{
+		return (T*)GetComponent(T::GetClassNameW());
+	}
 	template <typename T = Component>
-	T* GetComponent() const;
-	template <typename T = Component>
-	T* CreateComponent();
-	template <typename T = Component>
-	bool RemoveComponent();
+	bool HasComponent() const
+	{
+		return HasComponent(T::GetClassNameW());
+	}
+	template <typename T>
+	T* CreateComponent() {
+		T* component = new T();
+		component->owner = this;
+		componentsToAdd.push_back((Component*)component);
+		return component;
+	}
+	template <typename T>
+	bool RemoveComponent()
+	{
+		return RemoveComponent(T::GetClassNameW());
+	}
 
 protected:
 	void Serialize(RakNet::BitStream& bitStream) const override;
