@@ -19,4 +19,5 @@
 #include "NetworkServer.h"
 #include "NetworkClient.h"
 #include "NetworkRPC.h"
-#endif // !_GAME_CORE_H_
+
+#endif

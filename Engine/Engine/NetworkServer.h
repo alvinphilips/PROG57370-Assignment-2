@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef _NETWORK_SERVER_H_
+#define _NETWORK_SERVER_H_
+
 #include "NetworkCommon.h"
 
 class NetworkServer final
@@ -35,3 +38,5 @@ private:
 
 	friend class Engine;
 };
+
+#endif

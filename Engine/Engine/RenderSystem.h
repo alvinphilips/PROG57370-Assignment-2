@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _RENDERSYSTEM_H_
-#define _RENDERSYSTEM_H_
+#ifndef _RENDER_SYSTEM_H_
+#define _RENDER_SYSTEM_H_
 
 #include <iostream>
 #include <list>

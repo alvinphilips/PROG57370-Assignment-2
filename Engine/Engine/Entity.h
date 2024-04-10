@@ -74,4 +74,4 @@ private:
 	friend class Scene;
 };
 
-#endif // !_ENTITY_H_
+#endif

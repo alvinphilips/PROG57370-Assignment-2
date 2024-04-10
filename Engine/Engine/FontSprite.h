@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _FONT_SPRITE_
-#define _FONT_SPRITE_
+#ifndef _FONT_SPRITE_H_
+#define _FONT_SPRITE_H_
 
 #include "Renderable.h"
 #include "SDL.h"

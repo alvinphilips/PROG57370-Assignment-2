@@ -1,4 +1,5 @@
 #pragma once
+
 #ifndef PLAYER_H
 #define PLAYER_H
 
@@ -29,6 +30,4 @@ private:
     Vec2 movement;
 };
 
-#endif // PLAYER_H
-
-
+#endif

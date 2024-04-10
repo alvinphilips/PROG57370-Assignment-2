@@ -6,7 +6,9 @@
 // @date: 2023-11-28
 
 #pragma once
+
 #ifndef _SCENE_MANAGER_H_
+#define _SCENE_MANAGER_H_
 
 class Scene;
 class Entity;
@@ -78,4 +80,4 @@ private:
 	friend class NetworkServer;
 };
 
-#endif // !_SCENE_MANAGER_H_
+#endif

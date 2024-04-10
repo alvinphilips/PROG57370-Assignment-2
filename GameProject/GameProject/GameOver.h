@@ -1,4 +1,5 @@
 #pragma once
+
 #ifndef GAME_OVER_H
 #define GAME_OVER_H
 
@@ -23,6 +24,4 @@ private:
     bool is_playing_audio = false;
 };
 
-#endif // PLAYER_H
-
-
+#endif

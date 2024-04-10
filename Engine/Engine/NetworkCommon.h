@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef _NETWORK_COMMON_H_
+#define _NETWORK_COMMON_H_
+
 #include <MessageIdentifiers.h>
 
 enum NetworkPacketIds
@@ -14,3 +17,5 @@ enum NetworkPacketIds
 	MSG_SNAPSHOT,
 	MSG_RPC
 };
+
+#endif

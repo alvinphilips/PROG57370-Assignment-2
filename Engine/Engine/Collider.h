@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _ICOLLIDER_H
-#define _ICOLLIDER_H
+#ifndef _I_COLLIDER_H
+#define _I_COLLIDER_H
 
 #include "EngineCore.h"
 #include "SDL.h"
