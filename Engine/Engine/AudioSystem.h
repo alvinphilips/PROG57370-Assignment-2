@@ -11,8 +11,8 @@ class AudioSystem final
 	DECLARE_SINGLETON(AudioSystem)
 
 public:
-	void SetMusic(MusicAsset* music);
-	void PlayFX(SoundAsset* sound);
+	void SetMusic(const MusicAsset* music);
+	void PlayFX(const SoundAsset* sound);
 
 protected:
 	void Load(const std::string& config_file);

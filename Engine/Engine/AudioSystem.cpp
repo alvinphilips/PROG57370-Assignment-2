@@ -27,12 +27,12 @@ void AudioSystem::Load(const std::string& config_file)
 	}
 }
 
-void AudioSystem::SetMusic(MusicAsset* music)
+void AudioSystem::SetMusic(const MusicAsset* music)
 {
 	Mix_PlayMusic(music->GetMusic(), 0);
 }
 
-void AudioSystem::PlayFX(SoundAsset* sound)
+void AudioSystem::PlayFX(const SoundAsset* sound)
 {
 	Mix_PlayChannel(-1, sound->GetSound(), 0);
 }
