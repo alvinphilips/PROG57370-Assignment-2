@@ -6,7 +6,7 @@
 #include <SDL_keycode.h>
 #include <SDL.h>
 
-class InputSystem
+class InputSystem final
 {
 	DECLARE_SINGLETON(InputSystem)
 

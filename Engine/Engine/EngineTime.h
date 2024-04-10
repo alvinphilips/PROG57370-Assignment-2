@@ -5,7 +5,7 @@
 
 #include <chrono>
 
-class Time
+class Time final
 {
 	DECLARE_SINGLETON(Time)
 
