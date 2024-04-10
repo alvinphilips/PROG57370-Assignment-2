@@ -20,19 +20,22 @@ public:
 
 	void SerializeCreate(RakNet::BitStream& bitStream) const override;
 	void DeserializeCreate(RakNet::BitStream& bitStream) override;
+	void SetFilterColor(int r, int g, int b, int a);
 
 protected:
 	void Load(json::JSON& node) override;
 	void Destroy() override;
 	void Update() override;
 	void Render() override;
-	SDL_RendererFlip SetFlipFromScale(const Vec2 scale);
+	SDL_RendererFlip SetFlipFromScale(Vec2 scale);
 
 protected:
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	SDL_Rect targetRect = { 0,0,0,0 };
 	TextureAsset* texture = nullptr;
 	IVec2 size = { 0, 0 };
 	SDL_Rect sourceRect = { 0,0,0,0 };
+	SDL_Color filterColor = { 255, 255, 255 };
 };
 
 #endif

@@ -113,3 +113,11 @@ SDL_RendererFlip Sprite::SetFlipFromScale(const Vec2 scale)
 
     return flip;
 }
+
+void Sprite::SetFilterColor(int r, int g, int b, int a)
+{
+	filterColor.r = static_cast<Uint8>(r);
+	filterColor.g = static_cast<Uint8>(g);
+	filterColor.b = static_cast<Uint8>(b);
+	filterColor.a = static_cast<Uint8>(a);
+}
