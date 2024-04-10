@@ -85,11 +85,14 @@ void Sprite::SetTextureAsset(TextureAsset* texAsset)
 
 void Sprite::Render()
 {
+#ifndef STRIP_NULL_CHECKS
     if (texture == nullptr)
     {
         LOG("No pretty picture :(");
         return;
     }
+#endif
+
     const auto texture = this->texture->GetTexture();
     SDL_SetTextureColorMod(texture, filterColor.r, filterColor.g, filterColor.b);
     SDL_RenderCopyEx(

@@ -1,6 +1,6 @@
 #pragma once
 
-#ifndef  _ASSET_H_
+#ifndef _ASSET_H_
 #define _ASSET_H_
 
 #include "Object.h"
@@ -11,7 +11,7 @@ class Asset : public Object
 
 public:
 	void Load(json::JSON&) override;
-	void SetFilepath(std::string& path) { filepath = path; };
+	void SetFilepath(const std::string& path) { filepath = path; };
 
 protected:
 	std::string filepath;
@@ -19,4 +19,4 @@ protected:
 	friend class AssetManager;
 };
 
-#endif // !_ASSET_H_
+#endif

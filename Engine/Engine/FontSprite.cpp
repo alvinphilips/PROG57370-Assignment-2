@@ -18,11 +18,13 @@ void FontSprite::Update()
 {
 	Component::Update(); 
 	RegenerateOutput();
-
+	
+#ifndef STRIP_NULL_CHECKS
 	if (output != nullptr) 
 	{
 		SDL_QueryTexture(output, nullptr, nullptr, &outputSizing.x, &outputSizing.y);
 	}
+#endif
 
 	const Transform& transform = owner->GetTransform();
 
@@ -40,10 +42,12 @@ void FontSprite::Destroy()
 
 void FontSprite::Render() 
 {
+#ifndef STRIP_NULL_CHECKS
 	if (output == nullptr) 
 	{
 		return;
 	}
+#endif
 
 	const Transform& transform = owner->GetTransform();
     const auto size = IVec2(transform.scale * outputSizing);
@@ -129,10 +133,12 @@ void FontSprite::SetFontColor(int r, int g, int b, int a)
 
 void FontSprite::RegenerateOutput() 
 {
+#ifndef STRIP_NULL_CHECKS
 	if (font == nullptr) 
 	{
 		return;
 	}
+#endif
 
 	SDL_Surface* textSurface = TTF_RenderText_Solid((*font).GetFont(), text.c_str(), fontColor);
 	SDL_DestroyTexture(output);

@@ -42,6 +42,12 @@
 #define	RAD_TO_DEG(rad)				(rad * MATH_180_OVER_PI)
 #define	DEG_TO_RAD(deg)				(deg * MATH_PI_OVER_180)
 
+/// Alvin's section
+typedef uint32_t u32;
+typedef uint16_t u16;
+
+/// Alvin's section ends
+
 ///-------------------------------------------------------------------------------------------------
 /// <summary>
 /// Debug LOG that does nothing in release

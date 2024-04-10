@@ -1,4 +1,5 @@
 #pragma once
+
 #ifndef _FONT_ASSET_H_
 #define _FONT_ASSET_H_
 
@@ -10,7 +11,7 @@ class FontAsset final : public Asset
     DECLARE_DYNAMIC_DERIVED_CLASS(FontAsset, Asset)
 
 public:
-    void SetFontSize(int size) const;
+    void SetFontSize(uint32_t size);
     TTF_Font* GetFont() const { return font; };
 
 protected:
@@ -20,7 +21,7 @@ protected:
 
 private:
     TTF_Font* font = nullptr;
-    int font_size = 12;
+    uint32_t font_size = 12;
 };
 
-#endif // !_FONT_ASSET_H_
+#endif
