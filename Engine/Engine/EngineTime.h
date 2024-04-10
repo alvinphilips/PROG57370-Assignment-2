@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _TIME_H_
-#define _TIME_H_
+#ifndef _ENGINE_TIME_H_
+#define _ENGINE_TIME_H_
 
 #include <chrono>
 
@@ -10,9 +10,9 @@ class Time
 	DECLARE_SINGLETON(Time)
 
 public:
-	float DeltaTime() { return deltaTime.count(); }
-	float TotalTime() { return totalTime.count(); }
-	unsigned int FrameCount() { return frameCount; }
+	float DeltaTime() const { return deltaTime.count(); }
+	float TotalTime() const { return totalTime.count(); }
+	unsigned int FrameCount() const { return frameCount; }
 
 private:
 	void Initialize();
