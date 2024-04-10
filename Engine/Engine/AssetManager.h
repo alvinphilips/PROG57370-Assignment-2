@@ -28,6 +28,11 @@ public:
 	Asset* GetAsset(std::string guid);
 	Asset* GetAsset(STRCODE id);
 
+	template <typename T = Asset>
+	T* GetAsset(std::string guid);
+	template <typename T = Asset>
+	T* GetAsset(STRCODE id);
+
 	void RemoveAsset(std::string guid);
 	void RemoveAsset(STRCODE id);
 

@@ -20,7 +20,7 @@ void Scene::Deserialize(RakNet::BitStream& bitStream)
 	// Now the rest of the components
 	unsigned int entityCount = 0;
 	bitStream.Read(entityCount);
-	for (int i = 0; i < entityCount; i++)
+	for (unsigned int i = 0; i < entityCount; i++)
 	{
 		STRCODE entityUid;
 		bitStream.Read(entityUid);
@@ -88,7 +88,7 @@ void Scene::DeserializeSnapshot(RakNet::BitStream& bitStream)
 	unsigned int numberOfEntities = -1;
 	bitStream.Read(numberOfEntities);
 
-	for (int i = 0; i < numberOfEntities; i++)
+	for (unsigned int i = 0; i < numberOfEntities; i++)
 	{
 		STRCODE entityId = 0;
 		bitStream.Read(entityId);
