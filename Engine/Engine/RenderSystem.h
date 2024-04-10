@@ -30,14 +30,14 @@ protected:
 	void Destroy();
 
 private:
-	std::string _name = "DEFAULT NAME";
-	int _width = 1280;
-	unsigned int _height = 720;
-	bool _fullScreen = false;
-	SDL_Color _backgroundColor = { 0,0,0,255 };
-	std::list<IRenderable*> _renderables;
-	SDL_Window* _window = nullptr;
-	SDL_Renderer* _renderer = nullptr;
+	std::string title = "DEFAULT NAME";
+	int width = 1280;
+	unsigned int height = 720;
+	bool is_fullscreen = false;
+	SDL_Color background_color = { 0,0,0,255 };
+	std::list<IRenderable*> renderables;
+	SDL_Window* window = nullptr;
+	SDL_Renderer* renderer = nullptr;
 
 	friend class Engine;
 };
