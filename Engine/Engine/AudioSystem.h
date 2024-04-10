@@ -6,7 +6,7 @@
 class SoundAsset;
 class MusicAsset;
 
-class AudioSystem
+class AudioSystem final
 {
 	DECLARE_SINGLETON(AudioSystem)
 

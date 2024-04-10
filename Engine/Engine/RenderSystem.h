@@ -9,7 +9,7 @@
 
 class Renderable;
 
-class RenderSystem
+class RenderSystem final
 {
 	DECLARE_SINGLETON(RenderSystem)
 

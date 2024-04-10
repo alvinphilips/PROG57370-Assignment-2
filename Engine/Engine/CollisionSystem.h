@@ -14,7 +14,7 @@ class Collider;
 class CircleCollider;
 class BoxCollider;
 
-class CollisionSystem
+class CollisionSystem final
 {
 	DECLARE_SINGLETON(CollisionSystem)
 

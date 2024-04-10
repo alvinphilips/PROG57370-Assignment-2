@@ -11,7 +11,7 @@ struct AssetMapEntry
 	unsigned int ref_count;
 };
 
-class AssetManager
+class AssetManager final
 {
 	DECLARE_SINGLETON(AssetManager)
 
