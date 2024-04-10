@@ -39,7 +39,7 @@ void Entity::Deserialize(RakNet::BitStream& bitStream)
 	// Now the rest of the components
 	unsigned int compUpdateSize;
 	bitStream.Read(compUpdateSize);
-	for (int i = 0; i < compUpdateSize; i++)
+	for (unsigned int i = 0; i < compUpdateSize; i++)
 	{
 		STRCODE compUid;
 		bitStream.Read(compUid);
@@ -81,7 +81,7 @@ void Entity::DeserializeCreate(RakNet::BitStream& bitStream)
 	unsigned int numComponents = 0;
 	bitStream.Read(numComponents);
 
-	for (int i = 0; i < numComponents; i++)
+	for (unsigned int i = 0; i < numComponents; i++)
 	{
 		unsigned int componentId = 0;
 		bitStream.Read(componentId);
@@ -257,7 +257,7 @@ Component* Entity::GetComponentByUiD(STRCODE uid)
 
 Component* Entity::CreateComponent(const std::string& componentName)
 {
-    const auto component = (Component*)CreateObject(componentName.c_str());
+	const auto component = (Component*)CreateObject(componentName.c_str());
 	component->owner = this;
 	componentsToAdd.push_back(component);
 	return component;
@@ -274,4 +274,30 @@ bool Entity::RemoveComponent(const Component* component)
 		}
 	}
 	return false;
+}
+
+template <typename T>
+T* Entity::GetComponent() const
+{
+	return GetComponent(T::GetClassNameW());
+}
+
+template <typename T>
+bool Entity::HasComponent() const
+{
+	return HasComponent(T::GetDerivedClassName());
+}
+
+template <typename T>
+T* Entity::CreateComponent() {
+	T* component = new T();
+	component->owner = this;
+	componentsToAdd.push_back(component);
+	return component;
+}
+
+template <typename T>
+bool Entity::RemoveComponent()
+{
+	return RemoveComponent(T::GetClassNameW());
 }
