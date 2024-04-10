@@ -4,11 +4,13 @@
 #define _SPRITE_H_
 
 #include "SDL_rect.h"
-#include "Renderable.h"
+#include "SDL_render.h"
+#include "Component.h"
+#include "IRenderable.h"
 
 class TextureAsset;
 
-class Sprite : public Renderable
+class Sprite : public Component, public IRenderable
 {
 	DECLARE_DYNAMIC_DERIVED_CLASS(Sprite, Component)
 
@@ -16,11 +18,13 @@ public:
 	void SetSourceRect(SDL_Rect rect);
 	void SetTextureAsset(TextureAsset* texAsset);
 
-	inline SDL_Rect& GetTargetRect() { return targetRect; }
+	SDL_Rect& GetTargetRect() { return targetRect; }
 
 	void SerializeCreate(RakNet::BitStream& bitStream) const override;
 	void DeserializeCreate(RakNet::BitStream& bitStream) override;
 	void SetFilterColor(int r, int g, int b, int a);
+
+	Component* GetComponent() override;
 
 protected:
 	void Load(json::JSON& node) override;

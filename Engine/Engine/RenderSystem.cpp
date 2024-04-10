@@ -1,6 +1,6 @@
 #include "EngineCore.h"
 #include "RenderSystem.h"
-#include "Renderable.h"
+#include "IRenderable.h"
 #include "Scene.h"
 
 void RenderSystem::Initialize()
@@ -67,7 +67,7 @@ void RenderSystem::Update()
 
 	for (auto renderable : _renderables)
 	{
-		if (!renderable->owner->GetParentScene()->IsEnabled())
+		if (!renderable->GetComponent()->GetOwner()->GetParentScene()->IsEnabled())
 		{
 			continue;
 		}
@@ -92,12 +92,12 @@ SDL_Renderer& RenderSystem::GetRenderer()
 	return *_renderer;
 }
 
-void RenderSystem::AddRenderable(Renderable* renderable)
+void RenderSystem::AddRenderable(IRenderable* renderable)
 {
 	_renderables.push_back(renderable);
 }
 
-void RenderSystem::RemoveRenderable(Renderable* renderable)
+void RenderSystem::RemoveRenderable(IRenderable* renderable)
 {
 	_renderables.remove(renderable);
 }

@@ -7,7 +7,7 @@
 #include <list>
 #include "SDL.h"
 
-class Renderable;
+class IRenderable;
 
 class RenderSystem final
 {
@@ -17,8 +17,8 @@ public:
 	SDL_Window& GetWindow();
 	SDL_Renderer& GetRenderer();
 
-	void AddRenderable(Renderable* renderable);
-	void RemoveRenderable(Renderable* renderable);
+	void AddRenderable(IRenderable* renderable);
+	void RemoveRenderable(IRenderable* renderable);
 	void WindowBackgroundColor(int r, int g, int b, int a);
 	void WindowSize(int width, int height);
 	IVec2 GetWindowSize() const;
@@ -35,7 +35,7 @@ private:
 	unsigned int _height = 720;
 	bool _fullScreen = false;
 	SDL_Color _backgroundColor = { 0,0,0,255 };
-	std::list<Renderable*> _renderables;
+	std::list<IRenderable*> _renderables;
 	SDL_Window* _window = nullptr;
 	SDL_Renderer* _renderer = nullptr;
 

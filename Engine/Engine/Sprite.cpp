@@ -121,3 +121,8 @@ void Sprite::SetFilterColor(int r, int g, int b, int a)
 	filterColor.b = static_cast<Uint8>(b);
 	filterColor.a = static_cast<Uint8>(a);
 }
+
+Component* Sprite::GetComponent()
+{
+    return this;
+}

@@ -48,5 +48,4 @@ protected:
 	friend class CollisionSystem;
 };
 
-
 #endif
