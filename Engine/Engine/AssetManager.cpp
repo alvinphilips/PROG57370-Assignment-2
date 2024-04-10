@@ -78,15 +78,16 @@ void AssetManager::LoadSceneAsset(std::string& guid)
 	return LoadSceneAsset(id);
 }
 
-void AssetManager::LoadSceneAsset(STRCODE id)
+void AssetManager::LoadSceneAsset(const STRCODE id)
 {
-	if (assets.find(id) == assets.end())
+	const auto found_asset = assets.find(id);
+	if (found_asset == assets.end())
 	{
 		LOG("Could not find Asset with id: " << id);
 		return;
 	}
 
-	auto& [asset, ref_count] = assets.at(id);
+	auto& [asset, ref_count] = found_asset->second;
 	if (ref_count == 0)
 	{
 		asset->Initialize();
@@ -97,20 +98,21 @@ void AssetManager::LoadSceneAsset(STRCODE id)
 
 void AssetManager::UnloadSceneAsset(std::string& guid)
 {
-	STRCODE id = GetHashCode(guid.c_str());
+	const STRCODE id = GetHashCode(guid.c_str());
 	return UnloadSceneAsset(id);
 }
 
-void AssetManager::UnloadSceneAsset(STRCODE id)
+void AssetManager::UnloadSceneAsset(const STRCODE id)
 {
-	if (assets.find(id) == assets.end())
+	const auto found_asset = assets.find(id);
+	if (found_asset == assets.end())
 	{
 		LOG("Could not find Asset with id: " << id);
 		return;
 	}
 
-	assets.at(id).ref_count--;
-	if (assets.at(id).ref_count == 0)
+	found_asset->second.ref_count--;
+	if (found_asset->second.ref_count == 0)
 	{
 		RemoveAsset(id);
 	}
@@ -122,11 +124,11 @@ Asset* AssetManager::GetAsset(std::string guid)
 	return GetAsset(id);
 }
 
-Asset* AssetManager::GetAsset(STRCODE id)
+Asset* AssetManager::GetAsset(const STRCODE id)
 {
-	if (assets.find(id) != assets.end())
+	if (const auto found = assets.find(id); found != assets.end())
 	{
-		return assets.at(id).asset;
+		return found->second.asset;
 	}
 
 	LOG("Could not find Asset with id: " << id);
@@ -135,15 +137,15 @@ Asset* AssetManager::GetAsset(STRCODE id)
 
 void AssetManager::RemoveAsset(std::string guid)
 {
-	STRCODE id = GetHashCode(guid.c_str());
+	const STRCODE id = GetHashCode(guid.c_str());
 	RemoveAsset(id);
 }
 
-void AssetManager::RemoveAsset(STRCODE id)
+void AssetManager::RemoveAsset(const STRCODE id)
 {
-	if (assets.find(id) != assets.end())
+	if (const auto found = assets.find(id); found != assets.end())
 	{
-		assets.at(id).asset->Destroy();
+		found->second.asset->Destroy();
 	}
 	assets.erase(id);
 }
