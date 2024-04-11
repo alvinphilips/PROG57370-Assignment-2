@@ -29,7 +29,7 @@ class Asset : public Object
 
 public:
 	void Load(json::JSON&) override;
-	void SetFilepath(const std::string& path) { filepath = path; };
+	void SetFilepath(const std::string& path) { filepath = path; }
 
 protected:
 	std::string filepath;

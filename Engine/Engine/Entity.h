@@ -34,14 +34,14 @@ public:
 	{
 		return HasComponent(T::GetClassNameW());
 	}
-	template <typename T>
+	template <typename T = Component>
 	T* CreateComponent() {
 		T* component = new T();
 		component->owner = this;
 		componentsToAdd.push_back((Component*)component);
 		return component;
 	}
-	template <typename T>
+	template <typename T = Component>
 	bool RemoveComponent()
 	{
 		return RemoveComponent(T::GetClassNameW());
