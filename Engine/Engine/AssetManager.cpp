@@ -23,7 +23,6 @@ Asset* HandleAssetEntry(const std::filesystem::directory_entry& entry)
 	}
 
 	std::cout << "Found Asset: " << entry.path() << std::endl;
-
 	std::ifstream inputStream(entry.path());
 	std::string str((std::istreambuf_iterator<char>(inputStream)), std::istreambuf_iterator<char>());
 	json::JSON node = json::JSON::Load(str);
@@ -43,24 +42,24 @@ Asset* HandleAssetEntry(const std::filesystem::directory_entry& entry)
 }
 
 void AssetManager::Initialize()
-{
+{	
 	if (recursiveSearch)
 	{
 		for (const auto& entry : recursive_directory_iterator(assetDirectory))
 		{
-			AddAsset(HandleAssetEntry(entry));
+			AddAsset(HandleAssetEntry(entry), entry.last_write_time().time_since_epoch().count());
 		}
 	}
 	else
 	{
 		for (const auto& entry : directory_iterator(assetDirectory))
 		{
-			AddAsset(HandleAssetEntry(entry));
+			AddAsset(HandleAssetEntry(entry), entry.last_write_time().time_since_epoch().count());
 		}
 	}
 }
 
-void AssetManager::AddAsset(Asset* asset)
+void AssetManager::AddAsset(Asset* asset, const long long timestamp = 0)
 {
 	if (asset == nullptr)
 	{
@@ -69,6 +68,7 @@ void AssetManager::AddAsset(Asset* asset)
 	AssetMapEntry entry;
 	entry.asset = asset;
 	entry.ref_count = 0;
+	entry.timestamp = timestamp;
 	assets.insert_or_assign(asset->GetUid(), entry);
 }
 
@@ -87,7 +87,7 @@ void AssetManager::LoadSceneAsset(const STRCODE id)
 		return;
 	}
 
-	auto& [asset, ref_count] = found_asset->second;
+	auto& [asset, ref_count, _] = found_asset->second;
 	if (ref_count == 0)
 	{
 		asset->Initialize();

@@ -9,6 +9,7 @@ struct AssetMapEntry
 {
 	Asset* asset;
 	unsigned int ref_count;
+	long long timestamp;
 };
 
 class AssetManager final
@@ -18,7 +19,7 @@ class AssetManager final
 public:
 	void Initialize();
 	void Destroy();
-	void AddAsset(Asset* asset);
+	void AddAsset(Asset* asset, long long timestamp);
 
 	void LoadSceneAsset(std::string& guid);
 	void LoadSceneAsset(STRCODE id);

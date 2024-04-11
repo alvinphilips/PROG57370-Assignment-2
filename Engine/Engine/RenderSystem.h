@@ -3,7 +3,6 @@
 #ifndef _RENDER_SYSTEM_H_
 #define _RENDER_SYSTEM_H_
 
-#include <iostream>
 #include <list>
 #include "SDL.h"
 
@@ -32,7 +31,7 @@ protected:
 private:
 	std::string title = "DEFAULT NAME";
 	int width = 1280;
-	unsigned int height = 720;
+	int height = 720;
 	bool is_fullscreen = false;
 	SDL_Color background_color = { 0,0,0,255 };
 	std::list<IRenderable*> renderables;

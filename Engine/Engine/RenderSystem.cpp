@@ -77,7 +77,7 @@ void RenderSystem::Update()
 
 	SDL_RenderPresent(renderer);
 
-#ifdef DEBUG_FPS_COUNTER
+#ifndef DEBUG_FPS_COUNTER
 	static float accumulated_delta_time = 0;
 	accumulated_delta_time += Time::Instance().DeltaTime();
 
