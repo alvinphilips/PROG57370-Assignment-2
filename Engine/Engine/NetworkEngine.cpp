@@ -18,12 +18,12 @@ void NetworkEngine::LoadSettings()
 
 void NetworkEngine::PreUpdate()
 {
-	if (isServer)
+	if (is_server)
 	{
 		_ServerUpdate();
 	}
 
-	if (isClient)
+	if (is_client)
 	{
 		_ClientUpdate();
 	}
@@ -98,10 +98,10 @@ void NetworkEngine::Initialize(bool is_server)
 	state = CREATE_SERVER;
 
 	// TODO: Clean this bit up
-	this->isServer = is_server;
-	this->isClient = !is_server;
+	this->is_server = is_server;
+	this->is_client = !is_server;
 
-	if (isClient)
+	if (is_client)
 	{
 		state = WAITING_TO_CONNECT;
 		RakNet::SocketDescriptor sd(0, nullptr);
@@ -111,12 +111,12 @@ void NetworkEngine::Initialize(bool is_server)
 
 void NetworkEngine::SendPacket(RakNet::BitStream& bit_stream)
 {
-	if (isClient)
+	if (is_client)
 	{
 		rakInterface->Send(&bit_stream, MEDIUM_PRIORITY, RELIABLE_ORDERED, 0, serverGUID, false);
 	}
 
-	if (isServer)
+	if (is_server)
 	{
 		for (const auto& connection : connections)
 		{

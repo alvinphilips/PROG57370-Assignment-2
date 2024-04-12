@@ -21,21 +21,24 @@ public:
 	};
 	void Initialize(bool is_server);
 	bool IsInitialized() const { return initialized; }
+	bool IsClient() const { return is_client; }
+	bool IsServer() const { return is_server; }
 	void SendPacket(RakNet::BitStream& bit_stream);
+	void PreUpdate();
+private:
 	void WaitingForFirstPacket();
 	void SetupServer();
 	void LoadSettings();
-	void PreUpdate();
 	void _ClientUpdate();
 	void _UpdateClient();
 	void _ServerUpdate();
 	void _UpdateServer();
+private:
 	int port;
 	std::string ipAddress;
 	NetworkState state;
-	bool isClient = false;
-	bool isServer = false;
-
+	bool is_client = false;
+	bool is_server = false;
 	RakNet::RakPeerInterface* rakInterface;
 	RakNet::RakNetGUID serverGUID;
 	bool initialized = false;
