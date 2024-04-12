@@ -16,8 +16,8 @@ public:
     std::string& GetGuid() { return guid; }
     STRCODE GetUid() const { return uid; }
 
-    void Serialize(RakNet::BitStream& bitStream) const;
-    void Deserialize(RakNet::BitStream& bitStream);
+    void Serialize(RakNet::BitStream& bitStream) const override;
+    void Deserialize(RakNet::BitStream& bitStream) override;
     void SerializeCreate(RakNet::BitStream& bitStream) const override;
     void DeserializeCreate(RakNet::BitStream& bitStream) override;
 
