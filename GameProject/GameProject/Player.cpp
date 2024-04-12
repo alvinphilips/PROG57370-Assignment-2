@@ -19,7 +19,7 @@ void Player::Initialize()
 
 void Player::Update() 
 {
-	if (NetworkEngine::Instance().isServer)
+	if (!NetworkEngine::Instance().IsServer())
 	{
 		movement = Vec2::Zero;
 		const InputSystem& input = InputSystem::Instance();
@@ -68,7 +68,7 @@ void Player::Update()
 #endif
 	}
 
-	if (NetworkEngine::Instance().isClient)
+	if (NetworkEngine::Instance().IsClient())
 	{
 		if (movement != Vec2::Zero)
 		{

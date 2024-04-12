@@ -75,7 +75,7 @@ void Engine::GameLoop()
 		InputSystem::Instance().Update();
 
 		// --------------------- Network System Update ---------------------
-		if (NetworkEngine::Instance().isServer)
+		if (NetworkEngine::Instance().is_server)
 		{
 			SceneManager::Instance().NetworkUpdate();
 		}
