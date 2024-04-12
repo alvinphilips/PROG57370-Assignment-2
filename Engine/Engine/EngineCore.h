@@ -21,11 +21,19 @@
 // SOFTWARE.
 #pragma once
 
-#define _WINSOCKAPI_
-#define NOMINMAX
 
+#ifdef _WIN32
+
+#define NOMINMAX
+#define _WINSOCKAPI_
 #pragma comment(lib, "rpcrt4.lib")
 #include <windows.h>
+
+#else
+
+#include <uuid/uuid.h>
+
+#endif
 
 #include <iostream>
 #include <sstream>
