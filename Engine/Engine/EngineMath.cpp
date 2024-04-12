@@ -34,7 +34,7 @@ Vec2 Vec2::operator-() const
 
 bool Vec2::operator==(const Vec2& rhs) const
 {
-	return std::abs(this->x - rhs.x) <= SDL_FLT_EPSILON && std::abs(this->y - rhs.y) <= SDL_FLT_EPSILON;
+	return std::abs(this->x - rhs.x) <= FLT_EPSILON && std::abs(this->y - rhs.y) <= FLT_EPSILON;
 }
 
 bool Vec2::operator!=(const Vec2& rhs) const
@@ -136,7 +136,7 @@ void Vec2::Normalize()
 
 float Vec2::Magnitude() const 
 {
-	return SDL_sqrtf(this->MagnitudeSquared());
+	return sqrtf(this->MagnitudeSquared());
 }
 
 float Vec2::Dot(const Vec2& rhs) const 
