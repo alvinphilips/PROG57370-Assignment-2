@@ -69,8 +69,7 @@ private:
 	// (i.e. a scene which either has a JSON or got created by user during runtime)
 	std::map <STRCODE, std::string> stringUIDToFile;
 	friend class Engine;
-	friend class NetworkClient;
-	friend class NetworkServer;
+	friend class NetworkEngine;
 };
 
 #endif

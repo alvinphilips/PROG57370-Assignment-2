@@ -126,16 +126,13 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkServer.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="NetworkClient.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="NetworkRPC.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkEngine.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
@@ -230,12 +227,6 @@
     <ClInclude Include="IRenderable.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkServer.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="NetworkClient.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
     <ClInclude Include="NetworkCommon.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
@@ -246,6 +237,9 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="NetworkRPC.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkEngine.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>

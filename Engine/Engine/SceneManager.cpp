@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-#include "NetworkServer.h"
+#include "NetworkEngine.h"
 
 void SceneManager::Load()
 {
@@ -82,7 +82,7 @@ void SceneManager::NetworkUpdate()
 		bs.Write(scene->uid);
 		scene->Serialize(bs);
 
-		NetworkServer::Instance().SendPacket(bs);
+		NetworkEngine::Instance().SendPacket(bs);
 	}
 }
 
@@ -94,7 +94,7 @@ void SceneManager::SerializeSnapshot()
 		bitStream.Write((unsigned char)NetworkPacketIds::MSG_SCENE_MANAGER);
 		bitStream.Write((unsigned char)NetworkPacketIds::MSG_SNAPSHOT);
 		scene->SerializeSnapshot(bitStream);
-		NetworkServer::Instance().SendPacket(bitStream);
+		NetworkEngine::Instance().SendPacket(bitStream);
 	}
 }
 

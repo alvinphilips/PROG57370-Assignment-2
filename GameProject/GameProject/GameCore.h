@@ -16,8 +16,7 @@
 #include "AudioSystem.h"
 #include "AssetManager.h"
 #include "SceneManager.h"
-#include "NetworkServer.h"
-#include "NetworkClient.h"
+#include "NetworkEngine.h"
 #include "NetworkRPC.h"
 
 #endif

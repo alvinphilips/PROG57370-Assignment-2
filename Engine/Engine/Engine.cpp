@@ -13,8 +13,7 @@
 #include "CollisionSystem.h"
 #include "Component.h"
 
-#include "NetworkClient.h"
-#include "NetworkServer.h"
+#include "NetworkEngine.h"
 
 extern void Engine_Register();
 
@@ -25,7 +24,8 @@ void Engine::Initialize()
 	int serverClientChoice = -1;
 	std::cout << "Server [0] or Client [1]: ";
 	std::cin >> serverClientChoice;
-	(serverClientChoice == 0 ? NetworkServer::Instance().Initialize() : NetworkClient::Instance().Initialize());
+	bool isServer = serverClientChoice == 0;
+	NetworkEngine::Instance().Initialize(isServer);
 
 	// Load the managers
 	AudioSystem::Instance().Load("../Assets/AudioSystem.json");
@@ -58,8 +58,7 @@ void Engine::GameLoop()
 		Time::Instance().Update();
 
 		// --------------------- Network Update ---------------------
-		NetworkClient::Instance().Update();
-		NetworkServer::Instance().Update();
+		NetworkEngine::Instance().PreUpdate();
 
 		// --------------------- Pre-update Phase ---------------------
 		SceneManager::Instance().PreUpdate();
@@ -76,7 +75,7 @@ void Engine::GameLoop()
 		InputSystem::Instance().Update();
 
 		// --------------------- Network System Update ---------------------
-		if (NetworkServer::Instance().IsInitialized())
+		if (NetworkEngine::Instance().isServer)
 		{
 			SceneManager::Instance().NetworkUpdate();
 		}
