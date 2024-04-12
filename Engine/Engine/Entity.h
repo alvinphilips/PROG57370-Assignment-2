@@ -27,12 +27,12 @@ public:
 	template <typename T = Component>
 	T* GetComponent() const
 	{
-		return (T*)GetComponent(T::GetClassNameW());
+		return (T*)GetComponent(T::GetActualClassName());
 	}
 	template <typename T = Component>
 	bool HasComponent() const
 	{
-		return HasComponent(T::GetClassNameW());
+		return HasComponent(T::GetActualClassName());
 	}
 	template <typename T = Component>
 	T* CreateComponent() {
@@ -44,7 +44,7 @@ public:
 	template <typename T = Component>
 	bool RemoveComponent()
 	{
-		return RemoveComponent(T::GetClassNameW());
+		return RemoveComponent(T::GetActualClassName());
 	}
 
 protected:

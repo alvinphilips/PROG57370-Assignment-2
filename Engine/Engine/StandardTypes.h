@@ -42,9 +42,25 @@
 #define	RAD_TO_DEG(rad)				(rad * MATH_180_OVER_PI)
 #define	DEG_TO_RAD(deg)				(deg * MATH_PI_OVER_180)
 
-/// Alvin's section
+/// Alvin's section starts
+
 typedef uint32_t u32;
 typedef uint16_t u16;
+typedef uint8_t u8;
+
+#ifndef _WIN32
+typedef union {
+    struct {
+        unsigned int   Data1;
+        unsigned short Data2;
+        unsigned short Data3;
+        unsigned char  Data4[8];
+    };
+    uuid_t _data;
+} UUID;
+
+#define sprintf_s sprintf
+#endif
 
 /// Alvin's section ends
 
@@ -86,7 +102,11 @@ inline STRCODE GetHashCode(const char* str)
 /// <param name="uid"></param>
 inline void CreateUUID(UUID* uid)
 {
+#ifdef _WIN32
 	UuidCreate(uid);
+#else
+    uuid_generate((unsigned char*) uid->_data);
+#endif
 }
 
 /// <summary>

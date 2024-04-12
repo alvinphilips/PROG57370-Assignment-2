@@ -42,7 +42,7 @@ public:
 		return _ctor ? true : false;
 	}
 
-	const std::string& GetClassName() const
+	const std::string& GetActualClassName() const
 	{
 		return className;
 	}
@@ -92,7 +92,7 @@ extern Object* CreateObject(const char* _class);
     public:																													\
 		static std::string __class##name;																					\
         static TypeClass staticClassInfo_##name;																			\
-		static const std::string& GetClassName() { return name::staticClassInfo_##name.GetClassName(); }					\
+		static const std::string& GetActualClassName() { return name::staticClassInfo_##name.GetActualClassName(); }					\
 		static const STRCODE GetClassHashCode() { return name::staticClassInfo_##name.GetClassHashCode(); }					\
 		virtual const std::string& GetDerivedClassName() { return name::__class##name; }									\
 		virtual const STRCODE GetDerivedClassHashCode() { return name::staticClassInfo_##name.GetClassHashCode(); }
