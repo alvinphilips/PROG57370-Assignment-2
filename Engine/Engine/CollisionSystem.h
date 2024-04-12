@@ -5,7 +5,6 @@
 
 #include "EngineCore.h"
 #include "SDL.h"
-#include "Math.h"
 
 #include <utility>
 #include <set>
