@@ -3,7 +3,7 @@
 #include "Entity.h"
 #include "AssetManager.h"
 #include "NetworkServer.h"
-#include "NetworkRPC.h"
+
 
 
 void Scene::Serialize(RakNet::BitStream& bitStream) const

@@ -17,6 +17,7 @@ public:
 	};
 
 	bool IsInitialized() { return initialized; }
+	void SendPacket(RakNet::BitStream& bs);
 
 protected:
 	void Initialize();
@@ -36,7 +37,7 @@ private:
 
 	RakNet::RakPeerInterface* rakInterface;
 	RakNet::RakNetGUID serverGUID;
-	void SendPacket(RakNet::BitStream& bs);
+
 
 	friend class Engine;
 };

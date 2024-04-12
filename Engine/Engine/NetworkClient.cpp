@@ -25,6 +25,11 @@ void NetworkClient::LoadSettings()
 	port = document["port"].ToInt();
 }
 
+void NetworkClient::SendPacket(RakNet::BitStream& bs)
+{
+	rakInterface->Send(&bs, MEDIUM_PRIORITY, RELIABLE_ORDERED, 0, serverGUID, false);
+}
+
 void NetworkClient::Update()
 {
 	if (!initialized)
@@ -132,7 +137,4 @@ void NetworkClient::_Update()
 	}
 }
 
-void NetworkClient::SendPacket(RakNet::BitStream& bs)
-{
-	rakInterface->Send(&bs, MEDIUM_PRIORITY, RELIABLE_ORDERED, 0, serverGUID, false);
-}
+
