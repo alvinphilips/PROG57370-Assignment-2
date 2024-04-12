@@ -7,7 +7,7 @@
 
 class Entity;
 
-class Component : public Object
+class Component : public Object, protected NetworkRPC
 {
     DECLARE_ABSTRACT_DERIVED_CLASS(Component, Object)
 

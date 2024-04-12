@@ -4,6 +4,8 @@
 #include "AssetManager.h"
 #include "NetworkServer.h"
 
+
+
 void Scene::Serialize(RakNet::BitStream& bitStream) const
 {
 	bitStream.Write((unsigned int)entities.size());
@@ -30,6 +32,25 @@ void Scene::Deserialize(RakNet::BitStream& bitStream)
 			{
 				entity->Deserialize(bitStream);
 			}
+		}
+	}
+}
+
+void Scene::InvokeRPC(RakNet::BitStream& bitStream)
+{
+	STRCODE entityID;
+	bitStream.Read(entityID);
+
+	for (const auto entity : entities)
+	{
+		if (entity->GetUid() == entityID)
+		{
+			STRCODE componentID;
+			bitStream.Read(componentID);
+			NetworkRPC* networkRPC = (NetworkRPC*)entity->GetComponentByUiD(componentID);
+			ASSERT(networkRPC != nullptr, "Component is not a NetworkRPC");
+			networkRPC->InvokeRPC(bitStream);
+			break;
 		}
 	}
 }
