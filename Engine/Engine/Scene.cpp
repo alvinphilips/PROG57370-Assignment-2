@@ -2,7 +2,7 @@
 #include "Scene.h"
 #include "Entity.h"
 #include "AssetManager.h"
-#include "NetworkServer.h"
+#include "NetworkEngine.h"
 
 
 
@@ -201,13 +201,13 @@ void Scene::PreUpdate()
 	{
 		entities.push_back(entity);
 
-		if (NetworkServer::Instance().IsInitialized())
+		if (NetworkEngine::Instance().IsInitialized())
 		{
 			RakNet::BitStream bitStream;
 			bitStream.Write((unsigned char)NetworkPacketIds::MSG_SCENE_MANAGER);
 			bitStream.Write((unsigned char)NetworkPacketIds::MSG_CREATE_ENTITY);
 			SerializeCreateEntity(entity, bitStream);
-			NetworkServer::Instance().SendPacket(bitStream);
+			NetworkEngine::Instance().SendPacket(bitStream);
 		}
 	}
 	entitiesToBeAdded.clear();

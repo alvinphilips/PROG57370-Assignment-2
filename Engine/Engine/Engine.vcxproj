@@ -176,9 +176,8 @@
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="EngineMath.cpp" />
     <ClCompile Include="MusicAsset.cpp" />
-    <ClCompile Include="NetworkClient.cpp" />
+    <ClCompile Include="NetworkEngine.cpp" />
     <ClCompile Include="NetworkRPC.cpp" />
-    <ClCompile Include="NetworkServer.cpp" />
     <ClCompile Include="IRenderable.cpp" />
     <ClCompile Include="json.cpp" />
     <ClCompile Include="mersenne.cpp" />
@@ -212,10 +211,9 @@
     <ClInclude Include="EngineMath.h" />
     <ClInclude Include="ISerializable.h" />
     <ClInclude Include="MusicAsset.h" />
-    <ClInclude Include="NetworkClient.h" />
     <ClInclude Include="NetworkCommon.h" />
+    <ClInclude Include="NetworkEngine.h" />
     <ClInclude Include="NetworkRPC.h" />
-    <ClInclude Include="NetworkServer.h" />
     <ClInclude Include="IRenderable.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Object.h" />

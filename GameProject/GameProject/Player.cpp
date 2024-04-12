@@ -19,7 +19,7 @@ void Player::Initialize()
 
 void Player::Update() 
 {
-	if (NetworkServer::Instance().IsInitialized() == false)
+	if (NetworkEngine::Instance().isServer)
 	{
 		movement = Vec2::Zero;
 		const InputSystem& input = InputSystem::Instance();
@@ -68,7 +68,7 @@ void Player::Update()
 #endif
 	}
 
-	if (NetworkClient::Instance().IsInitialized() == true)
+	if (NetworkEngine::Instance().isClient)
 	{
 		if (movement != Vec2::Zero)
 		{
@@ -88,7 +88,7 @@ void Player::Update()
 			bitStream.Write(movement.x);
 			bitStream.Write(movement.y);
 			
-			NetworkClient::Instance().SendPacket(bitStream);
+			NetworkEngine::Instance().SendPacket(bitStream);
 		}
 		return;
 	}

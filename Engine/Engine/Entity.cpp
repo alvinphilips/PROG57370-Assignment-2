@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "Transform.h"
 #include "Scene.h"
-#include "NetworkServer.h"
+#include "NetworkEngine.h"
 
 IMPLEMENT_DYNAMIC_CLASS(Entity)
 
@@ -169,13 +169,13 @@ void Entity::PreUpdate()
 		components.push_back(component);
 		component->Initialize();
 
-		if (NetworkServer::Instance().IsInitialized())
+		if (NetworkEngine::Instance().IsInitialized())
 		{
 			RakNet::BitStream bitStream;
 			bitStream.Write((unsigned char)NetworkPacketIds::MSG_SCENE_MANAGER);
 			bitStream.Write((unsigned char)NetworkPacketIds::MSG_CREATE_COMPONENT);
 			SerializeCreateComponent(component, bitStream);
-			NetworkServer::Instance().SendPacket(bitStream);
+			NetworkEngine::Instance().SendPacket(bitStream);
 		}
 	}
 	componentsToAdd.clear();
