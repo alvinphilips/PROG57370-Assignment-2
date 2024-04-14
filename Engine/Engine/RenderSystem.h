@@ -15,6 +15,7 @@ class RenderSystem final
 public:
 	SDL_Window& GetWindow();
 	SDL_Renderer& GetRenderer();
+	SDL_Texture* GetDebugLayer();
 
 	void AddRenderable(IRenderable* renderable);
 	void RemoveRenderable(IRenderable* renderable);
@@ -37,6 +38,7 @@ private:
 	std::list<IRenderable*> renderables;
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
+	SDL_Texture* debug_layer = nullptr;
 
 	friend class Engine;
 };

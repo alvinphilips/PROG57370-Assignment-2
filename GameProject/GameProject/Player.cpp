@@ -3,10 +3,13 @@
 #include "Sprite.h"
 #include "TextureAsset.h"
 #include "BoxCollider.h"
+#include "DebugDraw.h"
 
 #define NDEBUG_PLAYER
 
 IMPLEMENT_DYNAMIC_CLASS(Player)
+
+using namespace gfx;
 
 void Player::Initialize()
 {
@@ -19,6 +22,9 @@ void Player::Initialize()
 
 void Player::Update() 
 {
+	// Debug::DrawCircle(owner->GetTransform().position, 50, Debug::draw_color, 12);
+	Debug::DrawRect(Vec2(50), Vec2(10));
+
 	if (!NetworkEngine::Instance().IsServer())
 	{
 		movement = Vec2::Zero;
