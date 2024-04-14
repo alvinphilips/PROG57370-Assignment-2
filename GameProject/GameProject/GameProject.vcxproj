@@ -187,11 +187,13 @@
     <ClCompile Include="Game_Register.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameCore.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Projectile.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Build\Assets\girl.png" />

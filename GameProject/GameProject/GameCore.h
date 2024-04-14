@@ -13,6 +13,7 @@
 #include "Component.h"
 #include "Player.h"
 #include "GameOver.h"
+#include "Projectile.h"
 #include "AudioSystem.h"
 #include "AssetManager.h"
 #include "SceneManager.h"

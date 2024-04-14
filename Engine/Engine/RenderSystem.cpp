@@ -52,10 +52,14 @@ void RenderSystem::Initialize()
 
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, is_fullscreen);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	debug_layer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, width, height);
+	SDL_SetTextureBlendMode(debug_layer, SDL_BLENDMODE_BLEND);
 }
 
 void RenderSystem::Destroy()
 {
+	SDL_DestroyTexture(debug_layer);
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 }
@@ -74,6 +78,15 @@ void RenderSystem::Update()
 		}
 		renderable->Render();
 	}
+
+	// Draw any Debug information
+	SDL_RenderCopy(renderer, debug_layer, nullptr, nullptr);
+
+	// Clear Debug information
+	SDL_SetRenderTarget(renderer, debug_layer);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+	SDL_RenderClear(renderer);
+	SDL_SetRenderTarget(renderer, nullptr);
 
 	SDL_RenderPresent(renderer);
 
@@ -102,6 +115,11 @@ SDL_Window& RenderSystem::GetWindow()
 SDL_Renderer& RenderSystem::GetRenderer()
 {
 	return *renderer;
+}
+
+SDL_Texture* RenderSystem::GetDebugLayer()
+{
+	return debug_layer;
 }
 
 void RenderSystem::AddRenderable(IRenderable* renderable)
