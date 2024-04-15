@@ -39,7 +39,8 @@ namespace gfx {
         DrawRect(padded_top_left, padded_dimensions, color);
     }
 
-    void Debug::DrawCircle(const Vec2& origin, const float radius, const Color& color, const unsigned int steps)
+    auto Debug::DrawCircle(const Vec2& origin, const float radius, const Color& color, const unsigned steps,
+                           const float rotation) -> void
     {
         if (steps == 0)
         {
@@ -55,8 +56,8 @@ namespace gfx {
         SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
         for (float i = 0; i <= MATH_PI * 2; i += circle_step)
         {
-	        const auto start_pos = Vec2(sinf(i), cosf(i)) * radius + Vec2(origin);
-	        const auto end_pos = Vec2(sinf(i + circle_step), cosf(i + circle_step)) * radius + Vec2(origin);
+	        const auto start_pos = Vec2(sinf(i + rotation), cosf(i + rotation)) * radius + Vec2(origin);
+	        const auto end_pos = Vec2(sinf(i + circle_step + rotation), cosf(i + circle_step + rotation)) * radius + Vec2(origin);
             SDL_RenderDrawLineF(renderer, start_pos.x, start_pos.y, end_pos.x, end_pos.y);
         }
         SDL_SetRenderDrawColor(renderer, prev_color.r, prev_color.g, prev_color.b, prev_color.a);

@@ -23,7 +23,7 @@ namespace gfx
 		static void DrawPaddedRect(const Vec2& top_left, const Vec2& dimensions, const Vec2& pad = padding);
 		static void DrawPaddedRect(const Vec2& top_left, const Vec2& dimensions, const Color& color = draw_color, const Vec2& pad = padding);
 		
-		static void DrawCircle(const Vec2& origin, float radius, const Color& color = draw_color, unsigned int steps = circle_steps);
+		static void DrawCircle(const Vec2& origin, float radius, const Color& color = draw_color, unsigned int steps = circle_steps, float rotation = 0);
 	};
 
 }
