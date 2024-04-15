@@ -11,14 +11,16 @@
 #include "InputSystem.h"
 #include "CollisionSystem.h"
 #include "Component.h"
-#include "Player.h"
-#include "GameOver.h"
-#include "Projectile.h"
 #include "AudioSystem.h"
 #include "AssetManager.h"
 #include "SceneManager.h"
 #include "NetworkEngine.h"
 #include "NetworkRPC.h"
 #include "DebugDraw.h"
+
+#include "Player.h"
+#include "GameOver.h"
+#include "Projectile.h"
+#include "Asteroid.h"
 
 #endif

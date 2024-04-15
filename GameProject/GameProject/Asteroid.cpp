@@ -1,5 +1,6 @@
 #include "GameCore.h"
-#include "Projectile.h"
+#include "Asteroid.h"
+
 #include "Sprite.h"
 #include "TextureAsset.h"
 #include "BoxCollider.h"
@@ -8,25 +9,25 @@
 
 using namespace gfx;
 
-IMPLEMENT_DYNAMIC_CLASS(Projectile)
+IMPLEMENT_DYNAMIC_CLASS(Asteroid)
 
-bool is_out_of_bounds(Vec2 position, IVec2 window_size) {
+static bool is_out_of_bounds(Vec2 position, IVec2 window_size) {
 	return position.x < 0 || position.x > window_size.x || position.y < 0 || position.y > window_size.y;
 }
 
-void Projectile::Initialize()
+void Asteroid::Initialize()
 {
 	Component::Initialize();
 
 
-	RegisterRPC(GetHashCode("RpcUpdatePosition"), std::bind(&Projectile::RpcUpdatePosition, this, std::placeholders::_1));
+	RegisterRPC(GetHashCode("RpcUpdatePosition"), std::bind(&Asteroid::RpcUpdatePosition, this, std::placeholders::_1));
 }
 
-void Projectile::Update()
+void Asteroid::Update()
 {
 	Component::Update();
 
-	Debug::DrawCircle(GetTransform().position, 10);
+	Debug::DrawCircle(GetTransform().position, radius);
 
 	if (is_out_of_bounds(GetTransform().position, RenderSystem::Instance().GetWindowSize()))
 	{
@@ -41,7 +42,6 @@ void Projectile::Update()
 
 	transform.position += velocity * Time::Instance().DeltaTime();
 
-	return;
 	if (sync_timer <= 0)
 	{
 		RakNet::BitStream bs;
@@ -62,27 +62,28 @@ void Projectile::Update()
 	}
 }
 
-void Projectile::SerializeCreate(RakNet::BitStream& bitStream) const
+void Asteroid::SerializeCreate(RakNet::BitStream& bitStream) const
 {
 	Component::SerializeCreate(bitStream);
 	bitStream.Write(velocity.x);
 	bitStream.Write(velocity.y);
 }
 
-void Projectile::DeserializeCreate(RakNet::BitStream& bitStream)
+void Asteroid::DeserializeCreate(RakNet::BitStream& bitStream)
 {
 	Component::DeserializeCreate(bitStream);
 	bitStream.Read(velocity.x);
 	bitStream.Read(velocity.y);
 }
 
-void Projectile::RpcDestroy(RakNet::BitStream& bitStream)
+void Asteroid::RpcDestroy(RakNet::BitStream& bitStream)
 {
+	owner->Dispose();
 }
 
-void Projectile::RpcUpdatePosition(RakNet::BitStream& bitStream)
+void Asteroid::RpcUpdatePosition(RakNet::BitStream& bitStream)
 {
-	Transform& transform = owner->GetTransform();
+	Transform& transform = GetTransform();
 	float value;
 	bitStream.Read(value);
 	transform.position.x = value;
