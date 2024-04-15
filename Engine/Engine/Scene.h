@@ -18,8 +18,6 @@ public:
 	bool RemoveEntity(std::string entityGuid);
 	bool RemoveEntity(STRCODE entityId);
 
-protected:
-
 	void Serialize(RakNet::BitStream& bitStream) const override;
 	void Deserialize(RakNet::BitStream& bitStream) override;
 	void SerializeCreateEntity(Entity* entity, RakNet::BitStream& bitStream) const;
@@ -28,6 +26,7 @@ protected:
 	void SerializeSnapshot(RakNet::BitStream& bitStream);
 	void DeserializeSnapshot(RakNet::BitStream& bitStream);
 
+protected:
 	void Load(json::JSON&);
 	void Initialize();
 	void Destroy();

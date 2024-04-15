@@ -47,7 +47,7 @@ public:
 		return RemoveComponent(T::GetActualClassName());
 	}
 
-protected:
+public:
 	void Serialize(RakNet::BitStream& bitStream) const override;
 	void Deserialize(RakNet::BitStream& bitStream) override;
 	void SerializeCreate(RakNet::BitStream& bitStream) const;
