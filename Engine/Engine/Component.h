@@ -6,6 +6,8 @@
 #include "Object.h"
 
 class Entity;
+class Transform;
+class Scene;
 
 class Component : public Object, protected NetworkRPC
 {
@@ -13,6 +15,8 @@ class Component : public Object, protected NetworkRPC
 
 public:
     Entity* GetOwner() const { return owner; }
+    Transform& GetTransform() const;
+    Scene* GetScene() const;
 
     // Inherited via ISerializable
     void Serialize(RakNet::BitStream& bitStream) const override;
