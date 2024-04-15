@@ -9,6 +9,16 @@ void Component::Destroy()
     owner = nullptr;
 }
 
+Transform& Component::GetTransform() const
+{
+    return owner->GetTransform();
+}
+
+Scene* Component::GetScene() const
+{
+    return owner->GetParentScene();
+}
+
 void Component::Serialize(RakNet::BitStream& bitStream) const
 {
     Object::Serialize(bitStream);
