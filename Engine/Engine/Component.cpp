@@ -39,3 +39,8 @@ void Component::DeserializeCreate(RakNet::BitStream& bitStream)
     Object::DeserializeCreate(bitStream);
 }
 
+void Component::Dispose() const
+{
+    owner->RemoveComponent(this);
+}
+

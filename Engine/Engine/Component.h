@@ -23,7 +23,7 @@ public:
     void Deserialize(RakNet::BitStream& bitStream) override;
     void SerializeCreate(RakNet::BitStream& bitStream) const override;
     void DeserializeCreate(RakNet::BitStream& bitStream) override;
-
+    void Dispose() const;
 protected:
     void Destroy() override;
 
