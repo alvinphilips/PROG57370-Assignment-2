@@ -41,12 +41,13 @@ public:
 		componentsToAdd.push_back((Component*)component);
 		return component;
 	}
+	// TODO: Fix
 	template <typename T = Component>
 	bool RemoveComponent()
 	{
 		return RemoveComponent(T::GetActualClassName());
 	}
-
+	void Dispose() const;
 public:
 	void Serialize(RakNet::BitStream& bitStream) const override;
 	void Deserialize(RakNet::BitStream& bitStream) override;

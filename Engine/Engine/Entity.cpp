@@ -16,6 +16,11 @@ void Entity::Initialize()
 	}
 }
 
+void Entity::Dispose() const
+{
+	ownerScene->RemoveEntity(this->uid);
+}
+
 void Entity::Serialize(RakNet::BitStream& bitStream) const
 {
 	// First the transform
@@ -60,6 +65,8 @@ void Entity::SerializeCreate(RakNet::BitStream& bitStream) const
 {
 	// Write the entity id
 	bitStream.Write(uid);
+	
+	transform.Serialize(bitStream);
 
 	// Write the total number of components
 	bitStream.Write((unsigned int)components.size());
@@ -77,6 +84,8 @@ void Entity::SerializeCreate(RakNet::BitStream& bitStream) const
 void Entity::DeserializeCreate(RakNet::BitStream& bitStream)
 {
 	bitStream.Read(uid);
+
+	transform.Deserialize(bitStream);
 
 	unsigned int numComponents = 0;
 	bitStream.Read(numComponents);
