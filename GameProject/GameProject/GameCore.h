@@ -19,5 +19,6 @@
 #include "SceneManager.h"
 #include "NetworkEngine.h"
 #include "NetworkRPC.h"
+#include "DebugDraw.h"
 
 #endif

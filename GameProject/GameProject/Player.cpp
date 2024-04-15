@@ -20,15 +20,31 @@ void Player::Initialize()
 	RegisterRPC(GetHashCode("RPC"), std::bind(&Player::RPC, this, std::placeholders::_1));
 }
 
-void Player::Update() 
+void Player::Update()
 {
-	// Debug::DrawCircle(owner->GetTransform().position, 50, Debug::draw_color, 12);
-	Debug::DrawRect(Vec2(50), Vec2(10));
+	Debug::DrawCircle(GetTransform().position, 50, Debug::draw_color, 3);
+	// Debug::DrawRect(GetTransform().position, Vec2(100));
+	const InputSystem& input = InputSystem::Instance();
+
+	if (input.IsKeyPressed(SDLK_SPACE))
+	{
+		const auto scene = owner->GetParentScene();
+		const auto entity = scene->CreateEntity();
+		entity->GetTransform().position = GetTransform().position;
+		const auto projectile = entity->CreateComponent<Projectile>();
+
+		Vec2 dir = Vec2(input.MousePosition()) - GetTransform().position;
+		dir.Normalize();
+		projectile->velocity = dir * 50.0f;
+		
+		RakNet::BitStream  bs;
+		scene->SerializeCreateEntity(entity, bs);
+		NetworkEngine::Instance().SendPacket(bs);
+	}
 
 	if (!NetworkEngine::Instance().IsServer())
 	{
 		movement = Vec2::Zero;
-		const InputSystem& input = InputSystem::Instance();
 
 		if (input.IsKeyPressed(SDLK_KP_ENTER) && networkedEntity == nullptr)
 		{
@@ -37,6 +53,8 @@ void Player::Update()
 			TextureAsset* asset = AssetManager::Instance().GetAsset<TextureAsset>("Explosion_435e0fce-7b11-409c-858e-af4bd7fe99c0");
 			sprite->SetTextureAsset(asset);
 		}
+
+
 
 		// Handle horizontal movement
 		if (input.IsKeyPressed(SDLK_LEFT) || input.IsKeyPressed(SDLK_a) || input.IsGamepadButtonPressed(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT)) {
@@ -67,19 +85,19 @@ void Player::Update()
 		// Normalize the direction vector if it's not zero
 		if (movement != Vec2::Zero) {
 			movement.Normalize();
-	}
+		}
 
 #ifdef DEBUG_PLAYER
 		LOG("Input: " << dir.x << ", " << dir.y);
 #endif
-	}
+		}
 
 	if (NetworkEngine::Instance().IsClient())
 	{
 		if (movement != Vec2::Zero)
 		{
 			RakNet::BitStream bitStream;
-			
+
 			bitStream.Write((unsigned char)MSG_SCENE_MANAGER);
 			bitStream.Write((unsigned char)MSG_RPC);
 
@@ -93,7 +111,7 @@ void Player::Update()
 
 			bitStream.Write(movement.x);
 			bitStream.Write(movement.y);
-			
+
 			NetworkEngine::Instance().SendPacket(bitStream);
 		}
 		return;
@@ -131,6 +149,7 @@ void Player::Update()
 		movement = Vec2::Zero;
 	}
 }
+
 void Player::Load(json::JSON& node)
 {
 	Component::Load(node);
