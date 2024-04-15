@@ -38,6 +38,7 @@ public:
 	void RegisterMouseEventHandler(Uint8 button, bool onPress, std::function<void()> handler);
 
 	void InitializeGamepads();
+	IVec2 MousePosition() const;
 
 	void HandleGamepadButton(SDL_JoystickID joystickID, SDL_GameControllerButton button, bool pressed);
 	void RegisterGamepadButtonEventHandler(SDL_JoystickID joystickID, SDL_GameControllerButton button, std::function<void(bool)> handler);
@@ -46,7 +47,7 @@ private:
 	bool  keyStates[SDL_NUM_SCANCODES] = { false };
 	bool mouseButtonStates[5];
 	int gamepadId;
-
+	IVec2 mouse_position;
 	std::map<SDL_Keycode, std::function<void()>> keyPressHandlers;
 	std::map<SDL_Keycode, std::function<void()>> keyReleaseHandlers;
 	std::map<Uint8, std::function<void()>> mousePressHandlers;
