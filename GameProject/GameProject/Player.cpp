@@ -1,6 +1,6 @@
 #include "GameCore.h"
 #include "Player.h"
-#include "Sprite.h"
+#include "AnimatedSprite.h"
 #include "TextureAsset.h"
 #include "BoxCollider.h"
 #include "DebugDraw.h"
@@ -16,13 +16,15 @@ void Player::Initialize()
 	Component::Initialize();
 	start_pos = owner->GetTransform().position;
 	collider = owner->GetComponent<BoxCollider>();
-
+	owner->GetComponent<AnimatedSprite>()->SetFilterColor(0,0,0,0);
+	GetTransform().position = RenderSystem::Instance().GetWindowSize() / 2;
 	RegisterRPC(GetHashCode("RPC"), std::bind(&Player::RPC, this, std::placeholders::_1));
 }
 
 void Player::Update()
 {
-	Debug::DrawCircle(GetTransform().position, 50, Debug::draw_color, 3);
+	Debug::DrawCircle(GetTransform().position, 50, Color::MAGENTA, 3, MATH_PI);
+	Debug::DrawCircle(GetTransform().position, 20, Color::WHITE, 5, MATH_PI);
 	// Debug::DrawRect(GetTransform().position, Vec2(100));
 	const InputSystem& input = InputSystem::Instance();
 
@@ -39,7 +41,7 @@ void Player::Update()
 		
 		RakNet::BitStream  bs;
 		scene->SerializeCreateEntity(entity, bs);
-		NetworkEngine::Instance().SendPacket(bs);
+		// NetworkEngine::Instance().SendPacket(bs);
 	}
 
 	if (!NetworkEngine::Instance().IsServer())
@@ -53,8 +55,6 @@ void Player::Update()
 			TextureAsset* asset = AssetManager::Instance().GetAsset<TextureAsset>("Explosion_435e0fce-7b11-409c-858e-af4bd7fe99c0");
 			sprite->SetTextureAsset(asset);
 		}
-
-
 
 		// Handle horizontal movement
 		if (input.IsKeyPressed(SDLK_LEFT) || input.IsKeyPressed(SDLK_a) || input.IsGamepadButtonPressed(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT)) {
