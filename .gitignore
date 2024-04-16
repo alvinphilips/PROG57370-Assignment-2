@@ -8,4 +8,20 @@ GameProject/Build/bin/*
 # User-specific files
 */*/*.vcxproj.user
 
+# CMake stuff
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+cmake-build-debug/
+
+*/.DS_Store
+.idea
 docs/
