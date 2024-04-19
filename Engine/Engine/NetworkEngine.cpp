@@ -70,10 +70,50 @@ void NetworkEngine::ReceivePackets()
 			break;
 
 		case ID_NEW_INCOMING_CONNECTION:
+		{
 			LOG("Got connection from " << packet->systemAddress.ToString(true) << "\n");
+			LOG("Hello, " << packet->guid.ToString() << "\n");
 			connections.push_back(packet->guid);
-			SceneManager::Instance().SerializeSnapshot();
+			if (is_server)
+			{
+				unsigned short client_count = (unsigned short)connections.size();
+
+				RakNet::BitStream hello_bs;
+				hello_bs.Write<unsigned char>(MSG_HI_NEW_FRIEND);
+				hello_bs.Write<unsigned short>(client_count - 1);
+				hello_bs.Write(packet->guid.ToString());
+				SendPacket(hello_bs);
+
+				RakNet::BitStream new_bs;
+				new_bs.Write<unsigned char>(MSG_OMG_NEW_FRIEND_SAY_HI);
+				new_bs.Write(client_count);
+				SendPacket(new_bs);
+			}
+			if (connections.size() >= 2)
+			{
+				SceneManager::Instance().SerializeSnapshot();
+			}
 			break;
+		}
+
+		case MSG_OMG_NEW_FRIEND_SAY_HI:
+		{
+			bs.Read<unsigned short>(friend_count);
+			LOG("We now have " << friend_count << " friends!");
+			on_player_joined.Invoke();
+			break;
+		}
+
+		case MSG_HI_NEW_FRIEND:
+		{
+			bs.Read<unsigned short>(my_index);
+			const auto my_guid = new char[50];
+			bs.Read(my_guid);
+			LOG("My name is " << my_guid);
+			me.FromString(my_guid);
+			delete[] my_guid;
+			break;
+		}
 
 		case ID_CONNECTION_LOST:
 		case ID_DISCONNECTION_NOTIFICATION:
@@ -114,9 +154,9 @@ void NetworkEngine::Initialize(const bool is_server)
 	// TODO: Clean this bit up
 	this->is_server = is_server;
 	this->is_client = !is_server;
-	
+
 	LoadSettings();
-	
+
 	rakInterface = RakNet::RakPeerInterface::GetInstance();
 	state = NetworkState::INITIALIZE_NETWORK;
 }
@@ -131,7 +171,7 @@ void NetworkEngine::SendPacket(const RakNet::BitStream& bs) const
 
 void NetworkEngine::InitializeNetwork()
 {
-	RakNet::SocketDescriptor sd(is_server ? (unsigned short) port : 0, nullptr);
+	RakNet::SocketDescriptor sd(is_server ? (unsigned short)port : 0, nullptr);
 	const unsigned int max_connections = is_server ? server_max_connections : 1;
 
 	if (rakInterface->Startup(max_connections, &sd, 1) != RakNet::RAKNET_STARTED)
