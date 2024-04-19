@@ -41,6 +41,7 @@ public:
 
 	// ------------------------- Entity-related member functions -------------------------
 	Entity* CreateEntity();
+	Entity* CreateEntity(STRCODE uid);
 
 	// Entity look-up always happens in the active scene
 	Entity* FindEntity(std::string entityGuid);

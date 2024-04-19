@@ -75,6 +75,13 @@ typedef union {
 	#define LOG(out)
 #endif
 
+#ifdef _DEBUG
+	#define LOG_ERROR(out) std::cerr << out << "\n";
+#else
+	#define LOG_ERROR(out)
+#endif
+
+
 ///-------------------------------------------------------------------------------------------------
 /// <summary>	
 /// Generates a hash code using FVN-1 

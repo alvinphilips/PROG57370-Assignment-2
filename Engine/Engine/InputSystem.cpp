@@ -1,6 +1,8 @@
 #include "EngineCore.h"
 #include "InputSystem.h"
 
+#include "RenderSystem.h"
+
 #define NDEBUG_INPUT
 
 void InputSystem::Initialize()
@@ -20,6 +22,8 @@ void InputSystem::Initialize()
 
 void InputSystem::Update()
 {
+	if (!RenderSystem::Instance().HasRenderer()) return;
+
 	SDL_GetMouseState(&mouse_position.x, &mouse_position.y);
 
 	// Update the state of the input system every frame

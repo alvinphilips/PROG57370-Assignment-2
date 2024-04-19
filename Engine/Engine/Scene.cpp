@@ -69,7 +69,7 @@ void Scene::DeserializeCreateEntity(RakNet::BitStream& bitStream)
 	Entity* entity = new Entity();
 	entity->ownerScene = this;
 	entity->DeserializeCreate(bitStream);
-	entities.push_back(entity);
+	entitiesToBeAdded.push_back(entity);
 }
 
 void Scene::DeserializeCreateEntityComponent(RakNet::BitStream& bitStream)
@@ -271,6 +271,15 @@ Entity* Scene::CreateEntity()
 {
 	Entity* entity = new Entity();
 	entity->ownerScene = this;
+	entitiesToBeAdded.push_back(entity);
+	return entity;
+}
+
+Entity* Scene::CreateEntity(const unsigned uid)
+{
+	Entity* entity = new Entity();
+	entity->ownerScene = this;
+	entity->uid = uid;
 	entitiesToBeAdded.push_back(entity);
 	return entity;
 }

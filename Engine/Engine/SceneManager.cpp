@@ -363,6 +363,11 @@ Entity* SceneManager::CreateEntity()
 	return activeScene->CreateEntity();
 }
 
+Entity* SceneManager::CreateEntity(const STRCODE uid)
+{
+	return activeScene->CreateEntity(uid);
+}
+
 Entity* SceneManager::FindEntity(std::string entityGuid)
 {
 	return activeScene->FindEntity(entityGuid);

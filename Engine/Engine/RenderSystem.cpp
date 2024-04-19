@@ -3,7 +3,7 @@
 #include "IRenderable.h"
 #include "Scene.h"
 
-void RenderSystem::Initialize()
+void RenderSystem::Initialize(const bool create_renderer)
 {
 	//Pulls the window information from the RenderSettings file located in Assets
 	std::ifstream inputStream("../Assets/RenderSettings.json");
@@ -50,23 +50,38 @@ void RenderSystem::Initialize()
 		std::cout << "Fullscreen wasn't found in RenderSettings. Going with the Default instead.";
 	}
 
-	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, is_fullscreen);
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if (create_renderer) {
+		window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, is_fullscreen);
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-	debug_layer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, width, height);
-	SDL_SetTextureBlendMode(debug_layer, SDL_BLENDMODE_BLEND);
+		debug_layer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, width, height);
+		SDL_SetTextureBlendMode(debug_layer, SDL_BLENDMODE_BLEND);
+	}
 }
 
 void RenderSystem::Destroy()
 {
-	SDL_DestroyTexture(debug_layer);
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
+	if (debug_layer != nullptr)
+	{
+		SDL_DestroyTexture(debug_layer);
+	}
+
+	if (window != nullptr)
+	{
+		SDL_DestroyWindow(window);
+	}
+
+	if (renderer != nullptr)
+	{
+		SDL_DestroyRenderer(renderer);
+	}
 }
 
 
 void RenderSystem::Update()
 {
+	if (renderer == nullptr) return;
+
 	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer, background_color.r, background_color.g, background_color.b, background_color.a);
 
@@ -140,13 +155,17 @@ void RenderSystem::WindowBackgroundColor(int r, int g, int b, int a)
 	background_color.a = a;
 }
 
-void RenderSystem::WindowSize(int width, int height)
+void RenderSystem::WindowSize(const int new_width, const int new_height)
 {
 	if (!is_fullscreen)
 	{
-		this->width = width;
-		this->height = height;
-		SDL_SetWindowSize(window, width, height);
+		width = new_width;
+		height = new_height;
+
+		if (window != nullptr)
+		{
+			SDL_SetWindowSize(window, width, height);
+		}
 	}
 	else
 	{
@@ -156,5 +175,5 @@ void RenderSystem::WindowSize(int width, int height)
 
 IVec2 RenderSystem::GetWindowSize() const
 {
-	return {static_cast<int>(width), static_cast<int>(height)};
+	return { static_cast<int>(width), static_cast<int>(height) };
 }

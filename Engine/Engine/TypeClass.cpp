@@ -23,7 +23,7 @@
 #include "TypeClass.h"
 #include "Object.h"
 
-#define NDEBUG_TYPECLASS
+#define DEBUG_TYPECLASS
 
 std::map<STRCODE, TypeClass*>* TypeClass::classTable;
 

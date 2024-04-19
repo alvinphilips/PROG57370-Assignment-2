@@ -17,7 +17,12 @@ void FontSprite::Initialize()
 void FontSprite::Destroy()
 {
 	Sprite::Destroy();
-	SDL_DestroyTexture(output);
+
+	if (output != nullptr)
+	{
+		SDL_DestroyTexture(output);
+		output = nullptr;
+	}
 }
 
 void FontSprite::Render()
@@ -112,9 +117,17 @@ void FontSprite::RegenerateOutput()
 #endif
 
 	SDL_Surface* textSurface = TTF_RenderText_Solid(font->GetFont(), text.c_str(), fontColor);
-	SDL_DestroyTexture(output);
-	output = SDL_CreateTextureFromSurface(&RenderSystem::Instance().GetRenderer(), textSurface);
-	SDL_FreeSurface(textSurface);
 
-	SDL_QueryTexture(output, nullptr, nullptr, &sourceRect.w, &sourceRect.h);
+	if (RenderSystem::Instance().HasRenderer())
+	{
+		SDL_DestroyTexture(output);
+		output = SDL_CreateTextureFromSurface(&RenderSystem::Instance().GetRenderer(), textSurface);
+
+		SDL_QueryTexture(output, nullptr, nullptr, &sourceRect.w, &sourceRect.h);
+	} else
+	{
+		sourceRect.w = textSurface->w;
+		sourceRect.h = textSurface->h;
+	}
+	SDL_FreeSurface(textSurface);
 }

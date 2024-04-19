@@ -20,12 +20,14 @@ public:
 	void AddRenderable(IRenderable* renderable);
 	void RemoveRenderable(IRenderable* renderable);
 	void WindowBackgroundColor(int r, int g, int b, int a);
-	void WindowSize(int width, int height);
+	void WindowSize(int new_width, int new_height);
 	IVec2 GetWindowSize() const;
+	bool HasWindow() const { return window != nullptr; }
+	bool HasRenderer() const { return renderer != nullptr; }
 
 protected:
 	void Load();
-	void Initialize();
+	void Initialize(bool create_renderer = true);
 	void Update();
 	void Destroy();
 

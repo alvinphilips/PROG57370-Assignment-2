@@ -18,260 +18,138 @@ void NetworkEngine::LoadSettings()
 
 void NetworkEngine::PreUpdate()
 {
-	if (is_server)
-	{
-		_ServerUpdate();
-	}
-
-	if (is_client)
-	{
-		_ClientUpdate();
-	}
-}
-
-void NetworkEngine::_ClientUpdate()
-{
-	if (!initialized)
-	{
-		return;
-	}
+	if (!is_server && !is_client) return;
 
 	switch (state)
 	{
-	case DISABLED:
+	case NetworkState::DISABLED:
 		break;
-
-	case WAITING_TO_CONNECT:
-		if (rakInterface->Connect(ipAddress.c_str(), port, NULL, 0) != RakNet::CONNECTION_ATTEMPT_STARTED)
+	case NetworkState::INITIALIZE_NETWORK:
+		if (rakInterface->IsActive())
 		{
-			std::cerr << "*** Failed to connect to server. Going to try later....." << std::endl;
+			rakInterface->Shutdown(0);
 		}
-		else
-		{
-			state = WAITING_FOR_FIRST_PACKET;
-		}
+		InitializeNetwork();
 		break;
-
-	case WAITING_FOR_FIRST_PACKET:
-		WaitingForFirstPacket();
-		break;
-
-	case RUNNING:
-		_UpdateClient();
-		break;
-
-	default:
+	case NetworkState::RUNNING:
+		ReceivePackets();
 		break;
 	}
 }
 
-void NetworkEngine::_ServerUpdate()
+void NetworkEngine::PostUpdate() const
 {
-	if (!initialized)
-	{
-		return;
-	}
+	if (!is_client && !is_server) return;
 
-	switch (state)
-	{
-	case DISABLED:
-		break;
-
-	case CREATE_SERVER:
-		SetupServer();
-		break;
-
-	case RUNNING:
-		_UpdateServer();
-		break;
-
-	default:
-		break;
-	}
+	SceneManager::Instance().NetworkUpdate();
 }
 
-void NetworkEngine::Initialize(bool is_server)
+void NetworkEngine::ReceivePackets()
 {
-	initialized = true;
-	LoadSettings();
-	rakInterface = RakNet::RakPeerInterface::GetInstance();
-	state = CREATE_SERVER;
-
-	// TODO: Clean this bit up
-	this->is_server = is_server;
-	this->is_client = !is_server;
-
-	if (is_client)
-	{
-		state = WAITING_TO_CONNECT;
-		RakNet::SocketDescriptor sd(0, nullptr);
-		rakInterface->Startup(1, &sd, 1);
-	}
-}
-
-void NetworkEngine::SendPacket(RakNet::BitStream& bit_stream)
-{
-	if (is_client)
-	{
-		rakInterface->Send(&bit_stream, MEDIUM_PRIORITY, RELIABLE_ORDERED, 0, serverGUID, false);
-	}
-
-	if (is_server)
-	{
-		for (const auto& connection : connections)
-		{
-			rakInterface->Send(&bit_stream, MEDIUM_PRIORITY, RELIABLE_ORDERED, 0, connection, false);
-		}
-	}
-}
-
-void NetworkEngine::_UpdateClient()
-{
-	unsigned char packetId;
-
+	unsigned char packet_id;
 	RakNet::Packet* packet = rakInterface->Receive();
+
 	while (packet != nullptr)
 	{
 		RakNet::BitStream bs(packet->data, packet->length, false);
-		bs.Read(packetId);
+		bs.Read(packet_id);
 
-		switch (packetId)
+		switch (packet_id)
 		{
-		case ID_DISCONNECTION_NOTIFICATION:
-		case ID_CONNECTION_LOST:
-			state = NETWORK_ERROR;
-			std::cout << "Disconnected from server" << std::endl;
+		case ID_CONNECTION_REQUEST_ACCEPTED:
+			if (is_client)
+			{
+				LOG("\nConnected to " << packet->systemAddress.ToString(true) << "\n");
+				connections.push_back(packet->guid);
+				state = NetworkState::RUNNING;
+			}
 			break;
 
 		case MSG_SCENE_MANAGER:
 			SceneManager::Instance().ProcessPacket(bs);
 			break;
-		}
-
-		rakInterface->DeallocatePacket(packet);
-		packet = rakInterface->Receive();
-	}
-}
-
-void NetworkEngine::_UpdateServer()
-{
-	// get a packet
-	RakNet::Packet* packet = rakInterface->Receive();
-
-	while (packet != NULL)
-	{
-		RakNet::BitStream bs(packet->data, packet->length, false);
-
-		unsigned char packetId;
-		bs.Read(packetId);
-
-		switch (packetId) {
 
 		case ID_NEW_INCOMING_CONNECTION:
-			// Somebody connected
-			std::cout << "Got connection from " << packet->systemAddress.ToString(true) << std::endl;
+			LOG("Got connection from " << packet->systemAddress.ToString(true) << "\n");
 			connections.push_back(packet->guid);
 			SceneManager::Instance().SerializeSnapshot();
 			break;
 
+		case ID_CONNECTION_LOST:
 		case ID_DISCONNECTION_NOTIFICATION:
-			// Connection lost normally
-			std::cout << "Disconnected from " << packet->systemAddress.ToString(true) << std::endl;
-			{
-				std::vector<RakNet::RakNetGUID>::iterator position = std::find(connections.begin(), connections.end(), packet->guid);
-				if (position != connections.end())
-				{
-					connections.erase(position);
-				}
-			}
+			LOG("Disconnected from " << packet->systemAddress.ToString(true) << "\n");
+			connections.erase(std::find(connections.begin(), connections.end(), packet->guid));
 			break;
 
-		case ID_CONNECTION_LOST:
-			// Couldn't deliver a reliable packet - i.e. the other system was abnormally terminated
-			std::cout << "Connection lost to " << packet->systemAddress.ToString(true) << std::endl;
+		case ID_CONNECTION_ATTEMPT_FAILED:
+			LOG_ERROR("*** Connection attempt failed ***");
+			state = NetworkState::INITIALIZE_NETWORK;
+			break;
+
+		case ID_NO_FREE_INCOMING_CONNECTIONS:
+			LOG_ERROR("*** Server is full ***");
+			state = NetworkState::INITIALIZE_NETWORK;
 			break;
 
 		case ID_INCOMPATIBLE_PROTOCOL_VERSION:
-			std::cerr << "Incomplatible protocol version from " << packet->systemAddress.ToString(true) << std::endl;
-			break;
-
-		case MSG_SCENE_MANAGER:
-			SceneManager::Instance().ProcessPacket(bs);
+			LOG_ERROR("*** Incompatible protocol version ***");
+			state = NetworkState::INITIALIZE_NETWORK;
 			break;
 
 		default:
-			std::cout << "Oops, received an unhandled packet with id " << (unsigned)packetId << std::endl;
+			LOG_ERROR("*** Unknown connection request ***");
+			state = NetworkState::INITIALIZE_NETWORK;
 			break;
 		}
 
 		rakInterface->DeallocatePacket(packet);
-
-		// get next packet
 		packet = rakInterface->Receive();
 	}
 }
 
-void NetworkEngine::WaitingForFirstPacket()
+void NetworkEngine::Initialize(const bool is_server)
 {
-	// wait for the first packet to arrive
-	RakNet::Packet* packet = rakInterface->Receive();
-	if (packet == nullptr)
-	{
-		return;
-	}
+	initialized = true;
 
-	// get the packet type identifier
-	unsigned char packetId = packet->data[0];
-	switch (packetId) {
-	case ID_CONNECTION_REQUEST_ACCEPTED:
-		std::cout << "\nConnected to " << packet->systemAddress.ToString(true) << std::endl;
-		state = RUNNING;
-		break;
-
-	case ID_CONNECTION_ATTEMPT_FAILED:
-		std::cerr << "*** Connection attempt failed" << std::endl;
-		state = NETWORK_ERROR;
-		break;
-
-	case ID_NO_FREE_INCOMING_CONNECTIONS:
-		std::cerr << "*** Server is full" << std::endl;
-		state = NETWORK_ERROR;
-		break;
-
-	case ID_INCOMPATIBLE_PROTOCOL_VERSION:
-		std::cerr << "*** Incompatible protocol version" << std::endl;
-		state = NETWORK_ERROR;
-		break;
-
-	default:
-		std::cerr << "*** Unknown connection response" << std::endl;
-		state = NETWORK_ERROR;
-		break;
-	}
-
-	serverGUID = packet->guid;
-
-	rakInterface->DeallocatePacket(packet);
+	// TODO: Clean this bit up
+	this->is_server = is_server;
+	this->is_client = !is_server;
+	
+	LoadSettings();
+	
+	rakInterface = RakNet::RakPeerInterface::GetInstance();
+	state = NetworkState::INITIALIZE_NETWORK;
 }
 
-void NetworkEngine::SetupServer()
+void NetworkEngine::SendPacket(const RakNet::BitStream& bs) const
 {
-	RakNet::SocketDescriptor sd(port, NULL);
-	if (rakInterface->Startup(8, &sd, 1) != RakNet::RAKNET_STARTED)
+	for (const auto& connection : connections)
 	{
-		std::cerr << "*** Failed to start server on port " << port << std::endl;
+		rakInterface->Send(&bs, MEDIUM_PRIORITY, RELIABLE_ORDERED, 0, connection, false);
+	}
+}
+
+void NetworkEngine::InitializeNetwork()
+{
+	RakNet::SocketDescriptor sd(is_server ? (unsigned short) port : 0, nullptr);
+	const unsigned int max_connections = is_server ? server_max_connections : 1;
+
+	if (rakInterface->Startup(max_connections, &sd, 1) != RakNet::RAKNET_STARTED)
+	{
+		LOG_ERROR("*** FAILED TO START NETWORK ***");
 		exit(1);
 	}
 
-	// set maximum number of incoming connections
-	rakInterface->SetMaximumIncomingConnections(8);
-
-	std::cout << "Listening on port " << port << std::endl;
-	std::cout << "IP addresses:" << std::endl;
-	for (unsigned i = 0; i < rakInterface->GetNumberOfAddresses(); i++)
+	if (is_client && rakInterface->Connect(ipAddress.c_str(), port, nullptr, 0) != RakNet::CONNECTION_ATTEMPT_STARTED)
 	{
-		std::cout << rakInterface->GetLocalIP(i) << std::endl;
+		LOG_ERROR("*** Failed to connect to server. Going to try again later :(");
+		return;
 	}
 
-	state = RUNNING;
+	if (is_server)
+	{
+		rakInterface->SetMaximumIncomingConnections(server_max_connections);
+	}
+
+	state = NetworkState::RUNNING;
 }

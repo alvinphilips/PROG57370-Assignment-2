@@ -18,7 +18,6 @@ void Projectile::Initialize()
 {
 	Component::Initialize();
 
-
 	RegisterRPC(GetHashCode("RpcUpdatePosition"), std::bind(&Projectile::RpcUpdatePosition, this, std::placeholders::_1));
 }
 
@@ -34,7 +33,7 @@ void Projectile::Update()
 		return;
 	}
 
-	if (!NetworkEngine::Instance().IsServer()) return;
+	// if (!NetworkEngine::Instance().IsServer()) return;
 
 	sync_timer -= Time::Instance().DeltaTime();
 	Transform& transform = owner->GetTransform();

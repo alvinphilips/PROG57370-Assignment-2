@@ -63,6 +63,9 @@ void Engine::GameLoop()
 		// --------------------- Pre-update Phase ---------------------
 		SceneManager::Instance().PreUpdate();
 
+		// --------------------- Input Phase ---------------------
+		InputSystem::Instance().Update();
+
 		// --------------------- Update Phase ---------------------
 		SceneManager::Instance().Update();
 		RenderSystem::Instance().Update();
@@ -70,14 +73,6 @@ void Engine::GameLoop()
 
 		// --------------------- Post-update Phase ---------------------
 		SceneManager::Instance().PostUpdate();
-
-		// --------------------- Input Phase ---------------------
-		InputSystem::Instance().Update();
-
-		// --------------------- Network System Update ---------------------
-		if (NetworkEngine::Instance().is_server)
-		{
-			SceneManager::Instance().NetworkUpdate();
-		}
+		NetworkEngine::Instance().PostUpdate();
 	}
 }

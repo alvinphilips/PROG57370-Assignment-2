@@ -11,6 +11,7 @@ public:
 	bool IsEnabled() const { return isEnabled; }
 	void SetEnabled(bool enabled) { isEnabled = enabled; }
 	Entity* CreateEntity();
+	Entity* CreateEntity(STRCODE uid);
 	Entity* FindEntity(std::string entityGuid);
 	Entity* FindEntity(STRCODE entityId);
 	std::list<Entity*> FindEntityByName(std::string entityName);  // entities can have same name
