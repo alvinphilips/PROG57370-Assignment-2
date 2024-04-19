@@ -220,6 +220,7 @@
     <ClInclude Include="NetworkRPC.h" />
     <ClInclude Include="IRenderable.h" />
     <ClInclude Include="json.hpp" />
+    <ClInclude Include="NetworkTransform.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="randomc.h" />
