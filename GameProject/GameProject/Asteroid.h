@@ -22,6 +22,7 @@ private:
     CircleCollider* collider = nullptr;
     float sync_timer = 0;
     float sync_delay = 5;
+    bool to_be_destroyed = false;
 };
 
 #endif

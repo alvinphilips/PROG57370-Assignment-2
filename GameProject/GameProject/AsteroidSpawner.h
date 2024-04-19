@@ -5,7 +5,7 @@
 
 #include "GameCore.h"
 
-class AsteroidSpawner : public Component
+class AsteroidSpawner final : public Component
 {
     DECLARE_DYNAMIC_DERIVED_CLASS(AsteroidSpawner, Component)
 
