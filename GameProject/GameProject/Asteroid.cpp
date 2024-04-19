@@ -1,9 +1,7 @@
 #include "GameCore.h"
 #include "Asteroid.h"
 
-#include "Sprite.h"
-#include "TextureAsset.h"
-#include "BoxCollider.h"
+#include "CircleCollider.h"
 
 #define NDEBUG_PLAYER
 
@@ -18,13 +16,15 @@ static bool is_out_of_bounds(Vec2 position, IVec2 window_size) {
 void Asteroid::Initialize()
 {
 	Component::Initialize();
+	collider = owner->CreateComponent<CircleCollider>();
+	collider->SetRadius(radius);
 }
 
 void Asteroid::Update()
 {
 	Component::Update();
 
-	Debug::DrawCircle(GetTransform().position, radius, Color(150, 75, 0));
+	Debug::DrawCircle(GetTransform().position, radius, to_be_destroyed ? Color::RED : Color(150, 75, 0));
 
 	if (is_out_of_bounds(GetTransform().position, RenderSystem::Instance().GetWindowSize()))
 	{
@@ -32,12 +32,22 @@ void Asteroid::Update()
 		return;
 	}
 
-	if (!NetworkEngine::Instance().IsServer()) return;
-
-	sync_timer -= Time::Instance().DeltaTime();
 	Transform& transform = owner->GetTransform();
 
 	transform.position += velocity * Time::Instance().DeltaTime();
+
+	if (!NetworkEngine::Instance().IsServer()) return;
+
+	for (const auto other : collider->OnCollisionEnter())
+	{
+		if (other->GetOwner()->GetName() == "Player")
+		{
+			LOG("ouch");
+			to_be_destroyed = true;
+		}
+	}
+
+	sync_timer -= Time::Instance().DeltaTime();
 
 	if (sync_timer <= 0 && false)
 	{
