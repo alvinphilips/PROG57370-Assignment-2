@@ -22,9 +22,6 @@ private:
     CircleCollider* collider = nullptr;
     float sync_timer = 0;
     float sync_delay = 5;
-private:
-    void RpcDestroy(RakNet::BitStream& bitStream);
-    void RpcUpdatePosition(RakNet::BitStream& bitStream);
 };
 
 #endif

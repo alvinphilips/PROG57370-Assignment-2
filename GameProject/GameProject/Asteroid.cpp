@@ -12,22 +12,19 @@ using namespace gfx;
 IMPLEMENT_DYNAMIC_CLASS(Asteroid)
 
 static bool is_out_of_bounds(Vec2 position, IVec2 window_size) {
-	return position.x < 0 || position.x > window_size.x || position.y < 0 || position.y > window_size.y;
+	return position.x < 0 || position.x > window_size.x || position.y > window_size.y;
 }
 
 void Asteroid::Initialize()
 {
 	Component::Initialize();
-
-
-	RegisterRPC(GetHashCode("RpcUpdatePosition"), std::bind(&Asteroid::RpcUpdatePosition, this, std::placeholders::_1));
 }
 
 void Asteroid::Update()
 {
 	Component::Update();
 
-	Debug::DrawCircle(GetTransform().position, radius);
+	Debug::DrawCircle(GetTransform().position, radius, Color(150, 75, 0));
 
 	if (is_out_of_bounds(GetTransform().position, RenderSystem::Instance().GetWindowSize()))
 	{
@@ -42,7 +39,7 @@ void Asteroid::Update()
 
 	transform.position += velocity * Time::Instance().DeltaTime();
 
-	if (sync_timer <= 0)
+	if (sync_timer <= 0 && false)
 	{
 		RakNet::BitStream bs;
 		bs.Write<unsigned char>(MSG_SCENE_MANAGER);
@@ -67,6 +64,7 @@ void Asteroid::SerializeCreate(RakNet::BitStream& bitStream) const
 	Component::SerializeCreate(bitStream);
 	bitStream.Write(velocity.x);
 	bitStream.Write(velocity.y);
+	bitStream.Write(radius);
 }
 
 void Asteroid::DeserializeCreate(RakNet::BitStream& bitStream)
@@ -74,19 +72,5 @@ void Asteroid::DeserializeCreate(RakNet::BitStream& bitStream)
 	Component::DeserializeCreate(bitStream);
 	bitStream.Read(velocity.x);
 	bitStream.Read(velocity.y);
-}
-
-void Asteroid::RpcDestroy(RakNet::BitStream& bitStream)
-{
-	owner->Dispose();
-}
-
-void Asteroid::RpcUpdatePosition(RakNet::BitStream& bitStream)
-{
-	Transform& transform = GetTransform();
-	float value;
-	bitStream.Read(value);
-	transform.position.x = value;
-	bitStream.Read(value);
-	transform.position.y = value;
+	bitStream.Read(radius);
 }
