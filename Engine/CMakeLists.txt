@@ -64,6 +64,8 @@ set(ENGINE_SOURCES
         ./Engine/SoundAsset.cpp
         ./Engine/Sprite.cpp
         ./Engine/TextureAsset.cpp
+        ./Engine/DebugDraw.cpp
+        ./Engine/Color.cpp
         ./Engine/Transform.cpp
         ./Engine/TypeClass.cpp
         )

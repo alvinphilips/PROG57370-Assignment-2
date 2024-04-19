@@ -38,6 +38,9 @@ set(GAME_SOURCES
         ./GameProject/Player.cpp
         ./GameProject/Game_Register.cpp
         ./GameProject/GameOver.cpp
+        ./GameProject/Asteroid.cpp
+        ./GameProject/AsteroidSpawner.cpp
+        ./GameProject/Projectile.cpp
         ./GameProject/main.cpp
 )
 

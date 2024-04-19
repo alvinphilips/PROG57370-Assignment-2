@@ -42,7 +42,7 @@ private:
 	bool initialized = false;
 	std::vector<RakNet::RakNetGUID> connections;
 	unsigned short friend_count = 0;
-	unsigned short my_index = MAXSHORT;
+	unsigned short my_index = std::numeric_limits<unsigned short>::max();
 	RakNet::RakNetGUID me;
 	const unsigned int server_max_connections = 8;
 

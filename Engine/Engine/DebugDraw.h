@@ -1,6 +1,7 @@
 #pragma once
 #include "Color.h"
 #include "FontAsset.h"
+#include "EngineMath.h"
 
 namespace gfx
 {
