@@ -25,7 +25,7 @@ void SceneManager::Load()
 			stringUIDToFile[sceneId] = scenePath;
 		}
 	}
-	
+
 	// Get the active scene GUID. Convert it to STRCODE
 	THROW_RUNTIME_ERROR(!sceneManagerJSON.hasKey("ActiveSceneGUID"), "Scene Manager must have an active scene.");
 	activeSceneId = GetHashCode(sceneManagerJSON["ActiveSceneGUID"].ToString().c_str());
@@ -104,81 +104,81 @@ void SceneManager::ProcessPacket(RakNet::BitStream& bitStream)
 	bitStream.Read(packet);
 	switch (packet)
 	{
-		case NetworkPacketIds::MSG_SCENE_UPDATE:
+	case NetworkPacketIds::MSG_SCENE_UPDATE:
+	{
+		STRCODE sceneUid = 0;
+		bitStream.Read(sceneUid);
+		for (Scene* scene : loadedScenes)
 		{
-			STRCODE sceneUid = 0;
-			bitStream.Read(sceneUid);
-			for (Scene* scene : loadedScenes)
+			if (scene->uid == sceneUid)
 			{
-				if (scene->uid == sceneUid)
-				{
-					scene->Deserialize(bitStream);
-					break;
-				}
+				scene->Deserialize(bitStream);
+				break;
 			}
 		}
-		break;
+	}
+	break;
 
-		case NetworkPacketIds::MSG_CREATE_ENTITY:
+	case NetworkPacketIds::MSG_CREATE_ENTITY:
+	{
+		STRCODE sceneUid = 0;
+		bitStream.Read(sceneUid);
+		for (Scene* scene : loadedScenes)
 		{
-			STRCODE sceneUid = 0;
-			bitStream.Read(sceneUid);
-			for (Scene* scene : loadedScenes)
+			if (scene->uid == sceneUid)
 			{
-				if (scene->uid == sceneUid)
-				{
-					scene->DeserializeCreateEntity(bitStream);
-					break;
-				}
+				scene->DeserializeCreateEntity(bitStream);
+				break;
 			}
 		}
-		break;
+	}
+	break;
 
-		case NetworkPacketIds::MSG_CREATE_COMPONENT:
+	case NetworkPacketIds::MSG_CREATE_COMPONENT:
+	{
+		STRCODE sceneUid = 0;
+		bitStream.Read(sceneUid);
+		for (Scene* scene : loadedScenes)
 		{
-			STRCODE sceneUid = 0;
-			bitStream.Read(sceneUid);
-			for (Scene* scene : loadedScenes)
+			if (scene->uid == sceneUid)
 			{
-				if (scene->uid == sceneUid)
-				{
-					scene->DeserializeCreateEntityComponent(bitStream);
-					break;
-				}
+				scene->DeserializeCreateEntityComponent(bitStream);
+				break;
 			}
 		}
-		break;
+	}
+	break;
 
 
-		case MSG_SNAPSHOT:
+	case MSG_SNAPSHOT:
+	{
+		STRCODE sceneUid = 0;
+		bitStream.Read(sceneUid);
+		for (Scene* scene : loadedScenes)
 		{
-			STRCODE sceneUid = 0;
-			bitStream.Read(sceneUid);
-			for (Scene* scene : loadedScenes)
+			if (scene->uid == sceneUid)
 			{
-				if (scene->uid == sceneUid)
-				{
-					scene->DeserializeSnapshot(bitStream);
-					break;
-				}
+				scene->DeserializeSnapshot(bitStream);
+				break;
 			}
 		}
-		break;
+	}
+	break;
 
-		case MSG_RPC:
+	case MSG_RPC:
+	{
+		STRCODE sceneUid = 0;
+		bitStream.Read(sceneUid);
+		for (Scene* scene : loadedScenes)
 		{
-			STRCODE sceneUid = 0;
-			bitStream.Read(sceneUid);
-			for (Scene* scene : loadedScenes)
+			if (scene->uid == sceneUid)
 			{
-				if (scene->uid == sceneUid)
-				{
-					scene->InvokeRPC(bitStream);
-					break;
-				}	
+				scene->InvokeRPC(bitStream);
+				break;
 			}
 		}
-		break;
+	}
+	break;
 	}
 }
 
@@ -233,7 +233,7 @@ void SceneManager::Destroy()
 	{
 		loadedScenes.merge(scenesToBeUnloaded);
 	}
-	
+
 	for (Scene* scene : loadedScenes)
 	{
 		scene->Destroy();
@@ -253,7 +253,7 @@ Scene* SceneManager::CreateScene()
 
 	// Created scenes automatically get added
 	scenesToBeLoaded.push_back(scene);
-	
+
 	return scene;
 }
 
@@ -301,9 +301,9 @@ bool SceneManager::SetActiveScene(STRCODE sceneId)
 		{
 			// Ensure that this scene is not scheduled to be deleted
 			auto it = std::find_if(scenesToBeUnloaded.begin(), scenesToBeUnloaded.end(),
-								   [sceneId](Scene* sc) {
-										return sc->GetUid() == sceneId;
-									});
+				[sceneId](Scene* sc) {
+					return sc->GetUid() == sceneId;
+				});
 			THROW_RUNTIME_ERROR(it != scenesToBeUnloaded.end(), "Error! The scene being set as active does not exist anymore.");
 			toBeSetAsActive = scene;
 			return true;
