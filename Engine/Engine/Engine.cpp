@@ -17,14 +17,31 @@
 
 extern void Engine_Register();
 
-void Engine::Initialize()
+void Engine::Initialize(int argc, char* argv[])
 {
 	Engine_Register();
 
+	bool ask_network_pref = true;
 	int serverClientChoice = -1;
-	std::cout << "Server [0] or Client [1]: ";
-	std::cin >> serverClientChoice;
+
+	for (int i = 0; i < argc; i++) {
+		if (strcmp(argv[i], "-server") == 0) {
+			serverClientChoice = 0;
+			ask_network_pref = false;
+		}
+
+		if (strcmp(argv[i], "-client") == 0) {
+			serverClientChoice = 1;
+			ask_network_pref = false;
+		}
+	}
+
+	if (ask_network_pref) {
+		std::cout << "Server [0] or Client [1]: ";
+		std::cin >> serverClientChoice;
+	}
 	bool isServer = serverClientChoice == 0;
+
 	NetworkEngine::Instance().Initialize(isServer);
 
 	// Load the managers

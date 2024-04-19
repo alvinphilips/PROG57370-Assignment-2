@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
 {
 	GameRegisterClasses();
 
-	Engine::Instance().Initialize();
+	Engine::Instance().Initialize(argc, argv);
 	Engine::Instance().GameLoop();
 	Engine::Instance().Destroy();
 
