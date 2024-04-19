@@ -17,18 +17,26 @@ void TextureAsset::Initialize()
 	}
 #endif
 
-	texture = SDL_CreateTextureFromSurface(&RenderSystem::Instance().GetRenderer(), image);
-	SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+	if (RenderSystem::Instance().HasRenderer()) {
+		texture = SDL_CreateTextureFromSurface(&RenderSystem::Instance().GetRenderer(), image);
+		SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
 
 #ifdef DEBUG_TEXTURE_INIT
-	if (texture == nullptr)
-	{
-		LOG("Could not load Texture: " << SDL_GetError());
+		if (texture == nullptr)
+		{
+			LOG("Could not load Texture: " << SDL_GetError());
+		}
+		else
+		{
+			LOG("Loaded a " << width << "x" << height << "texture");
+		}
+#endif
 	} else
 	{
-		LOG("Loaded a " << width << "x" << height << "texture");
+		// We do not create a texture, use SDL_Surface dimensions instead
+		width = image->w;
+		height = image->w;
 	}
-#endif
 
 	SDL_FreeSurface(image);
 }

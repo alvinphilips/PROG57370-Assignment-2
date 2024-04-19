@@ -16,7 +16,7 @@ void Player::Initialize()
 	Component::Initialize();
 	start_pos = owner->GetTransform().position;
 	collider = owner->GetComponent<BoxCollider>();
-	owner->GetComponent<AnimatedSprite>()->SetFilterColor(0,0,0,0);
+	owner->GetComponent<AnimatedSprite>()->SetFilterColor(0, 0, 0, 0);
 	GetTransform().position = RenderSystem::Instance().GetWindowSize() / 2;
 	RegisterRPC(GetHashCode("RPC"), std::bind(&Player::RPC, this, std::placeholders::_1));
 }
@@ -27,8 +27,8 @@ void Player::Update()
 	Debug::DrawCircle(GetTransform().position, 20, Color::WHITE, 5, MATH_PI);
 	// Debug::DrawRect(GetTransform().position, Vec2(100));
 	const InputSystem& input = InputSystem::Instance();
-
-	if (input.IsKeyPressed(SDLK_SPACE))
+	static bool hasSpawnedPewPew = false;
+	if (input.IsKeyPressed(SDLK_SPACE) && !hasSpawnedPewPew)
 	{
 		const auto scene = owner->GetParentScene();
 		const auto entity = scene->CreateEntity();
@@ -38,10 +38,12 @@ void Player::Update()
 		Vec2 dir = Vec2(input.MousePosition()) - GetTransform().position;
 		dir.Normalize();
 		projectile->velocity = dir * 50.0f;
-		
+
 		RakNet::BitStream  bs;
+		bs.Write<unsigned char>(MSG_SCENE_MANAGER);
+		bs.Write<unsigned char>(MSG_CREATE_ENTITY);
 		scene->SerializeCreateEntity(entity, bs);
-		// NetworkEngine::Instance().SendPacket(bs);
+		NetworkEngine::Instance().SendPacket(bs);
 	}
 
 	if (!NetworkEngine::Instance().IsServer())
@@ -90,32 +92,32 @@ void Player::Update()
 #ifdef DEBUG_PLAYER
 		LOG("Input: " << dir.x << ", " << dir.y);
 #endif
-		}
-
-	if (NetworkEngine::Instance().IsClient())
-	{
-		if (movement != Vec2::Zero)
-		{
-			RakNet::BitStream bitStream;
-
-			bitStream.Write((unsigned char)MSG_SCENE_MANAGER);
-			bitStream.Write((unsigned char)MSG_RPC);
-
-			//write the scene id
-			bitStream.Write(owner->GetParentScene()->GetUid());
-			// Write the entity id
-			bitStream.Write(owner->GetUid());
-			//write this id
-			bitStream.Write(GetUid());
-			bitStream.Write(GetHashCode("RPC"));
-
-			bitStream.Write(movement.x);
-			bitStream.Write(movement.y);
-
-			NetworkEngine::Instance().SendPacket(bitStream);
-		}
-		return;
 	}
+
+	//if (NetworkEngine::Instance().IsClient())
+	//{
+	//	if (movement != Vec2::Zero)
+	//	{
+	//		RakNet::BitStream bitStream;
+
+	//		bitStream.Write((unsigned char)MSG_SCENE_MANAGER);
+	//		bitStream.Write((unsigned char)MSG_RPC);
+
+	//		//write the scene id
+	//		bitStream.Write(owner->GetParentScene()->GetUid());
+	//		// Write the entity id
+	//		bitStream.Write(owner->GetUid());
+	//		//write this id
+	//		bitStream.Write(GetUid());
+	//		bitStream.Write(GetHashCode("RPC"));
+
+	//		bitStream.Write(movement.x);
+	//		bitStream.Write(movement.y);
+
+	//		NetworkEngine::Instance().SendPacket(bitStream);
+	//	}
+	//	return;
+	//}
 
 	// Move the player
 	if (movement != Vec2::Zero)
