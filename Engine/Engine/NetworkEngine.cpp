@@ -82,7 +82,7 @@ void NetworkEngine::ReceivePackets()
 				hello_bs.Write<unsigned char>(MSG_HI_NEW_FRIEND);
 				hello_bs.Write<unsigned short>(client_count - 1);
 				hello_bs.Write(packet->guid.ToString());
-				SendPacket(hello_bs);
+				rakInterface->Send(&hello_bs, MEDIUM_PRIORITY, RELIABLE_ORDERED, 0, packet->guid, false);
 
 				RakNet::BitStream new_bs;
 				new_bs.Write<unsigned char>(MSG_OMG_NEW_FRIEND_SAY_HI);
@@ -112,6 +112,7 @@ void NetworkEngine::ReceivePackets()
 			LOG("My name is " << my_guid);
 			me.FromString(my_guid);
 			delete[] my_guid;
+			on_player_joined.Invoke();
 			break;
 		}
 

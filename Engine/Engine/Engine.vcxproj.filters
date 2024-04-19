@@ -254,5 +254,8 @@
     <ClInclude Include="DebugDraw.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
+    <ClInclude Include="NetworkTransform.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
