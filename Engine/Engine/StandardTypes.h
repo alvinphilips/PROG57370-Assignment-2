@@ -62,6 +62,46 @@ typedef union {
 #define sprintf_s sprintf
 #endif
 
+typedef std::function<void()> callback_fn;
+
+class EventListener
+{
+public:
+	~EventListener();
+
+	void AddListener(const callback_fn& listener);
+
+	void Invoke() const;
+
+	void RemoveAllListeners();
+
+private:
+	std::vector<callback_fn> callbacks;
+};
+
+inline EventListener::~EventListener()
+{
+	RemoveAllListeners();
+}
+
+inline void EventListener::AddListener(const callback_fn& listener)
+{
+	callbacks.push_back(listener);
+}
+
+inline void EventListener::Invoke() const
+{
+	for (const auto& callback : callbacks)
+	{
+		callback();
+	}
+}
+
+inline void EventListener::RemoveAllListeners()
+{
+	callbacks.clear();
+}
+
 /// Alvin's section ends
 
 ///-------------------------------------------------------------------------------------------------
@@ -69,6 +109,7 @@ typedef union {
 /// Debug LOG that does nothing in release
 /// </summary>
 ///-------------------------------------------------------------------------------------------------
+
 #ifdef _DEBUG
 	#define LOG(out) std::cout << out << std::endl;
 #else
