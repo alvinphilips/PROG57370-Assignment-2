@@ -34,7 +34,7 @@ void Engine::Initialize()
 	AudioSystem::Instance().Initialize();
 	AssetManager::Instance().Initialize();
 
-	RenderSystem::Instance().Initialize();
+	RenderSystem::Instance().Initialize(!isServer);
 	SceneManager::Instance().Load();
 
 	SceneManager::Instance().Initialize();
