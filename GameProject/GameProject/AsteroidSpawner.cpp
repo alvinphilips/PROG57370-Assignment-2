@@ -19,13 +19,12 @@ void AsteroidSpawner::Update()
 
 	const auto random_position = Vec2((float) (rand() % RenderSystem::Instance().GetWindowSize().x), spawn_position_y);
 
-	float random_float = (float) rand() / (float) RAND_MAX;
+	const float random_float = (float) rand() / (float) RAND_MAX;
 
-	auto asteroid_type = random_float < large_asteroid_rate ? AsteroidFactory::AsteroidType::Big : AsteroidFactory::AsteroidType::Small;
+	const auto asteroid_type = random_float < large_asteroid_rate ? AsteroidFactory::AsteroidType::Big : AsteroidFactory::AsteroidType::Small;
 
 	if (spawn_timer <= 0)
 	{
-		LOG("Spawning Asteroid uwu")
 		AsteroidFactory::CreateAsteroid(GetScene(), asteroid_type, random_position);
 		spawn_timer = spawn_delay;
 	}
