@@ -17,7 +17,9 @@ void Player::Initialize()
 	start_pos = owner->GetTransform().position;
 	collider = owner->GetComponent<BoxCollider>();
 	owner->GetComponent<AnimatedSprite>()->SetFilterColor(0, 0, 0, 0);
+	owner->CreateComponent<AsteroidSpawner>();
 	GetTransform().position = RenderSystem::Instance().GetWindowSize() / 2;
+	GetTransform().position.y = RenderSystem::Instance().GetWindowSize().y * 0.75f;
 	RegisterRPC(GetHashCode("RPC"), std::bind(&Player::RPC, this, std::placeholders::_1));
 }
 
@@ -27,8 +29,9 @@ void Player::Update()
 	Debug::DrawCircle(GetTransform().position, 20, Color::WHITE, 5, MATH_PI);
 	// Debug::DrawRect(GetTransform().position, Vec2(100));
 	const InputSystem& input = InputSystem::Instance();
-	static bool hasSpawnedPewPew = false;
-	if (input.IsKeyPressed(SDLK_SPACE) && !hasSpawnedPewPew)
+
+	fire_timer -= Time::Instance().DeltaTime();
+	if (input.IsKeyPressed(SDLK_SPACE) && fire_timer <= 0)
 	{
 		const auto scene = owner->GetParentScene();
 		const auto entity = scene->CreateEntity();
@@ -44,6 +47,7 @@ void Player::Update()
 		bs.Write<unsigned char>(MSG_CREATE_ENTITY);
 		scene->SerializeCreateEntity(entity, bs);
 		NetworkEngine::Instance().SendPacket(bs);
+		fire_timer = fire_delay;
 	}
 
 	if (!NetworkEngine::Instance().IsServer())

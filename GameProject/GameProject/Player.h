@@ -28,6 +28,8 @@ private:
 
 private:
     Vec2 movement;
+    float fire_delay = 0.2f;
+    float fire_timer = 0;
 };
 
 #endif

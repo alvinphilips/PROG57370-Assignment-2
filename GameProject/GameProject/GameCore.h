@@ -18,9 +18,10 @@
 #include "NetworkRPC.h"
 #include "DebugDraw.h"
 
-#include "Player.h"
 #include "GameOver.h"
-#include "Projectile.h"
 #include "Asteroid.h"
+#include "AsteroidSpawner.h"
+#include "Projectile.h"
+#include "Player.h"
 
 #endif

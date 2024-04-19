@@ -66,10 +66,17 @@ void Scene::SerializeCreateEntity(Entity* entity, RakNet::BitStream& bitStream) 
 
 void Scene::DeserializeCreateEntity(RakNet::BitStream& bitStream)
 {
+	const auto prev_bs_offset = bitStream.GetReadOffset();
+	STRCODE entity_id;
+	bitStream.Read(entity_id);
+
+	if (FindEntity(entity_id)) return;
+
+	bitStream.SetReadOffset(prev_bs_offset);
 	Entity* entity = new Entity();
 	entity->ownerScene = this;
 	entity->DeserializeCreate(bitStream);
-	entitiesToBeAdded.push_back(entity);
+	entities.push_back(entity);
 }
 
 void Scene::DeserializeCreateEntityComponent(RakNet::BitStream& bitStream)
