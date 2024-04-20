@@ -243,6 +243,15 @@ void Scene::PostUpdate()
 {
 	for (Entity* entity : entitiesToDestroy)
 	{
+		if (NetworkEngine::Instance().IsServer())
+		{
+			RakNet::BitStream bitStream;
+			bitStream.Write((unsigned char)NetworkPacketIds::MSG_SCENE_MANAGER);
+			bitStream.Write((unsigned char)NetworkPacketIds::MSG_DESTROY_ENTITY);
+			bitStream.Write(uid);
+			bitStream.Write(entity->uid);
+			NetworkEngine::Instance().SendPacket(bitStream);
+		}
 		entity->Destroy();
 		delete entity;
 		entities.remove(entity);

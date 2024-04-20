@@ -10,10 +10,13 @@ class Time final
 	DECLARE_SINGLETON(Time)
 
 public:
-	float DeltaTime() const { return delta_time.count(); }
-	float TotalTime() const { return total_time.count(); }
+	float DeltaTime() const { return delta_time.count() * time_scale; }
+	float TotalTime() const { return total_time.count() * time_scale; }
+	float DeltaTimeRaw() const { return delta_time.count(); }
+	float TotalTimeRaw() const { return total_time.count(); }
 	unsigned int FrameCount() const { return frame_count; }
-
+	float time_scale = 1;
+	float current_server_time = 0;
 private:
 	void Initialize();
 	void Update();

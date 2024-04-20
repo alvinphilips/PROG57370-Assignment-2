@@ -20,9 +20,11 @@ public:
     float radius = 20;
 private:
     CircleCollider* collider = nullptr;
-    float sync_timer = 0;
-    float sync_delay = 5;
-    bool to_be_destroyed = false;
+    Vec2 start_position;
+    float start_time = 0;
+
+    friend class AsteroidFactory;
+    friend class AsteroidSpawner;
 };
 
 #endif

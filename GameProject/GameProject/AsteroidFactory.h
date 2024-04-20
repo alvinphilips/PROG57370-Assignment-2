@@ -34,6 +34,8 @@ public:
 		const auto asteroid = asteroid_entity->CreateComponent<Asteroid>();
 		asteroid->radius = GetSize(type);
 		asteroid->velocity = Vec2(0, 10);
+		asteroid->start_time = Time::Instance().TotalTimeRaw();
+		asteroid->start_position = position;
 
 		return asteroid;
 	}

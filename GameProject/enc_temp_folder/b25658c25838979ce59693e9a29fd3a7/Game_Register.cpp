@@ -7,5 +7,4 @@ void GameRegisterClasses()
 	REGISTER_TYPECLASS(Projectile);
 	REGISTER_TYPECLASS(Asteroid);
 	REGISTER_TYPECLASS(AsteroidSpawner);
-	REGISTER_TYPECLASS(GameManager);
 }

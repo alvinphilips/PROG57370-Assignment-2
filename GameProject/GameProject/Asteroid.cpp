@@ -24,7 +24,13 @@ void Asteroid::Update()
 {
 	Component::Update();
 
-	Debug::DrawCircle(GetTransform().position, radius, to_be_destroyed ? Color::RED : Color(150, 75, 0));
+	Debug::DrawCircle(GetTransform().position, radius, Color(150, 75, 0));
+
+	Transform& transform = GetTransform();
+
+	transform.position = start_position + velocity * (Time::Instance().current_server_time - start_time);
+
+	if (!NetworkEngine::Instance().IsServer()) return;
 
 	if (is_out_of_bounds(GetTransform().position, RenderSystem::Instance().GetWindowSize()))
 	{
@@ -32,55 +38,33 @@ void Asteroid::Update()
 		return;
 	}
 
-	Transform& transform = owner->GetTransform();
-
-	transform.position += velocity * Time::Instance().DeltaTime();
-
-	if (!NetworkEngine::Instance().IsServer()) return;
-
 	for (const auto other : collider->OnCollisionEnter())
 	{
 		if (other->GetOwner()->GetName() == "Player")
 		{
-			LOG("ouch");
-			to_be_destroyed = true;
+			owner->Dispose();
 		}
-	}
-
-	sync_timer -= Time::Instance().DeltaTime();
-
-	if (sync_timer <= 0 && false)
-	{
-		RakNet::BitStream bs;
-		bs.Write<unsigned char>(MSG_SCENE_MANAGER);
-		bs.Write<unsigned char>(MSG_RPC);
-		//write the scene id
-		bs.Write(owner->GetParentScene()->GetUid());
-		// Write the entity id
-		bs.Write(owner->GetUid());
-		//write this id
-		bs.Write(GetUid());
-		bs.Write(GetHashCode("RpcUpdatePosition"));
-		bs.Write(transform.position.x);
-		bs.Write(transform.position.y);
-
-		NetworkEngine::Instance().SendPacket(bs);
-		sync_timer = sync_delay;
 	}
 }
 
 void Asteroid::SerializeCreate(RakNet::BitStream& bitStream) const
 {
 	Component::SerializeCreate(bitStream);
+	bitStream.Write(start_position.x);
+	bitStream.Write(start_position.y);
 	bitStream.Write(velocity.x);
 	bitStream.Write(velocity.y);
+	bitStream.Write(start_time);
 	bitStream.Write(radius);
 }
 
 void Asteroid::DeserializeCreate(RakNet::BitStream& bitStream)
 {
 	Component::DeserializeCreate(bitStream);
+	bitStream.Read(start_position.x);
+	bitStream.Read(start_position.y);
 	bitStream.Read(velocity.x);
 	bitStream.Read(velocity.y);
+	bitStream.Read(start_time);
 	bitStream.Read(radius);
 }

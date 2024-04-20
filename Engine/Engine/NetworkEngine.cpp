@@ -89,10 +89,7 @@ void NetworkEngine::ReceivePackets()
 				new_bs.Write(client_count);
 				SendPacket(new_bs);
 			}
-			if (connections.size() >= 2)
-			{
-				SceneManager::Instance().SerializeSnapshot();
-			}
+			on_client_connected.Invoke();
 			break;
 		}
 

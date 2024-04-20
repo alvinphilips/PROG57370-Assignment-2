@@ -27,56 +27,41 @@ void Projectile::Update()
 
 	Debug::DrawCircle(GetTransform().position, 10);
 
-	if (is_out_of_bounds(GetTransform().position, RenderSystem::Instance().GetWindowSize()))
-	{
-		owner->Dispose();
-		return;
-	}
+	
 
 	// if (!NetworkEngine::Instance().IsServer()) return;
 
-	sync_timer -= Time::Instance().DeltaTime();
 	Transform& transform = owner->GetTransform();
 
-	// transform.position += velocity * Time::Instance().DeltaTime();
+	transform.position = start_position + velocity * (Time::Instance().current_server_time - start_time);
 
-	return;
-	if (sync_timer <= 0)
+	if (!NetworkEngine::Instance().IsServer()) return;
+
+	if (is_out_of_bounds(GetTransform().position, RenderSystem::Instance().GetWindowSize()))
 	{
-		RakNet::BitStream bs;
-		bs.Write<unsigned char>(MSG_SCENE_MANAGER);
-		bs.Write<unsigned char>(MSG_RPC);
-		//write the scene id
-		bs.Write(owner->GetParentScene()->GetUid());
-		// Write the entity id
-		bs.Write(owner->GetUid());
-		//write this id
-		bs.Write(GetUid());
-		bs.Write(GetHashCode("RpcUpdatePosition"));
-		bs.Write(transform.position.x);
-		bs.Write(transform.position.y);
-
-		NetworkEngine::Instance().SendPacket(bs);
-		sync_timer = sync_delay;
+		owner->Dispose();
 	}
 }
 
 void Projectile::SerializeCreate(RakNet::BitStream& bitStream) const
 {
 	Component::SerializeCreate(bitStream);
+	bitStream.Write(start_position.x);
+	bitStream.Write(start_position.y);
 	bitStream.Write(velocity.x);
 	bitStream.Write(velocity.y);
+	bitStream.Write(start_time);
 }
 
 void Projectile::DeserializeCreate(RakNet::BitStream& bitStream)
 {
 	Component::DeserializeCreate(bitStream);
+	bitStream.Read(start_position.x);
+	bitStream.Read(start_position.y);
 	bitStream.Read(velocity.x);
 	bitStream.Read(velocity.y);
-}
-
-void Projectile::RpcDestroy(RakNet::BitStream& bitStream)
-{
+	bitStream.Read(start_time);
+	Time::Instance().current_server_time = start_time;
 }
 
 void Projectile::RpcUpdatePosition(RakNet::BitStream& bitStream)

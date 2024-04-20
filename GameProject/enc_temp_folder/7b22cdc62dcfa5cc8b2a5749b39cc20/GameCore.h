@@ -18,7 +18,6 @@
 #include "NetworkRPC.h"
 #include "DebugDraw.h"
 
-#include "GameManager.h"
 #include "GameOver.h"
 #include "Asteroid.h"
 #include "AsteroidSpawner.h"

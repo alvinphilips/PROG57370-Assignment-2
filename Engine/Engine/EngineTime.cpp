@@ -10,6 +10,7 @@ void Time::Initialize()
 	end_time = std::chrono::system_clock::now();
 	delta_time = std::chrono::duration<float>(0);
 	total_time = std::chrono::duration<float>(0);
+	time_scale = 1;
 	frame_count = 0;
 }
 

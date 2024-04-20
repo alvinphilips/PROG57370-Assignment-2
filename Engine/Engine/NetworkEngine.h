@@ -25,6 +25,8 @@ public:
 	unsigned short GetMyIndex() const { return my_index; }
 	RakNet::RakNetGUID GetGUID() const { return me; } // Get gud lol
 	EventListener on_player_joined;
+	EventListener on_client_connected;
+	bool AreWeGameYet() const { return connections.size() >= min_game_required_players; }
 private:
 	void Initialize(bool is_server);
 	void PreUpdate();
@@ -45,6 +47,7 @@ private:
 	unsigned short my_index = std::numeric_limits<unsigned short>::max();
 	RakNet::RakNetGUID me;
 	const unsigned int server_max_connections = 8;
+	const unsigned int min_game_required_players = 2;
 
 	friend class Engine;
 };
