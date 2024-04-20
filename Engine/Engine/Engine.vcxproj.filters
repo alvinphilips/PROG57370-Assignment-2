@@ -141,12 +141,6 @@
     <ClCompile Include="DebugDraw.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkTransform.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Rigidbody.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -261,9 +255,6 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="NetworkTransform.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Rigidbody.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
