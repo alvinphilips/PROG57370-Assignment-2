@@ -38,7 +38,7 @@ void Projectile::Update()
 	sync_timer -= Time::Instance().DeltaTime();
 	Transform& transform = owner->GetTransform();
 
-	transform.position += velocity * Time::Instance().DeltaTime();
+	// transform.position += velocity * Time::Instance().DeltaTime();
 
 	return;
 	if (sync_timer <= 0)

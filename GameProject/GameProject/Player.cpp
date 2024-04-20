@@ -4,6 +4,8 @@
 #include "TextureAsset.h"
 #include "BoxCollider.h"
 #include "DebugDraw.h"
+#include "NetworkTransform.h"
+#include "Rigidbody.h"
 
 #define NDEBUG_PLAYER
 
@@ -211,10 +213,12 @@ void Player::RPC(RakNet::BitStream& bitStream)
 	const auto entity = scene->CreateEntity();
 	entity->GetTransform().position = spawn_position;
 	const auto projectile = entity->CreateComponent<Projectile>();
+	const auto rb = entity->CreateComponent<Rigidbody>();
+	entity->CreateComponent<NetworkTransform>();
 
 	Vec2 dir = spawn_target - spawn_position;
 	dir.Normalize();
-	projectile->velocity = dir * 50.0f;
+	rb->velocity = dir * 50.0f;
 
 	RakNet::BitStream  bs;
 	bs.Write<unsigned char>(MSG_SCENE_MANAGER);
