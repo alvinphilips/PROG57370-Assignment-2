@@ -19,20 +19,19 @@ void Player::Initialize()
 	owner->GetComponent<AnimatedSprite>()->SetFilterColor(0, 0, 0, 0);
 	owner->CreateComponent<AsteroidSpawner>();
 
-	GetTransform().position.x = RenderSystem::Instance().GetWindowSize().x * 0.5f;
+
 	NetworkEngine::Instance().on_player_joined.AddListener([this]
 		{
 			auto pos_factor = 0.5f;
 			LOG(NetworkEngine::Instance().GetFriendCount());
 			LOG(NetworkEngine::Instance().GetMyIndex());
-			if (NetworkEngine::Instance().GetFriendCount() > 1)
+			if (NetworkEngine::Instance().GetFriendCount() != 0)
 			{
-				pos_factor = (float) NetworkEngine::Instance().GetMyIndex() / (float) NetworkEngine::Instance().GetFriendCount() - 1;
+				pos_factor = (float) NetworkEngine::Instance().GetMyIndex() / (float) NetworkEngine::Instance().GetFriendCount();
 			}
 
 			GetTransform().position.x = RenderSystem::Instance().GetWindowSize().x * pos_factor;
 		});
-
 	GetTransform().position.y = RenderSystem::Instance().GetWindowSize().y * 0.75f;
 	RegisterRPC(GetHashCode("RPC"), std::bind(&Player::RPC, this, std::placeholders::_1));
 }

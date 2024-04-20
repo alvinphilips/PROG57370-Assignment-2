@@ -6,7 +6,7 @@
 #include "Component.h"
 #include "EngineMath.h"  
 
-class Transform final : public Component 
+class Transform : public Component 
 {
     DECLARE_DYNAMIC_DERIVED_CLASS(Transform, Component)
 
