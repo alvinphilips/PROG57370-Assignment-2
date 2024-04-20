@@ -45,7 +45,7 @@ public:
 	template <typename T = Component>
 	bool RemoveComponent()
 	{
-		return RemoveComponent(T::GetActualClassName());
+		return RemoveComponent(GetComponent<T>());
 	}
 	void Dispose() const;
 public:
