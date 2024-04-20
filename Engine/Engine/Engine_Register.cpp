@@ -13,8 +13,6 @@
 #include "Collider.h"
 #include "CircleCollider.h"
 #include "BoxCollider.h"
-#include "NetworkTransform.h"
-#include "Rigidbody.h"
 
 void Engine_Register()
 {
@@ -32,6 +30,4 @@ void Engine_Register()
 	REGISTER_TYPECLASS(Collider);
 	REGISTER_TYPECLASS(BoxCollider);
 	REGISTER_TYPECLASS(CircleCollider);
-	REGISTER_TYPECLASS(Rigidbody);
-	REGISTER_TYPECLASS(NetworkTransform);
 }

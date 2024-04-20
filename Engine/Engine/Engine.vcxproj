@@ -183,11 +183,9 @@
     <ClCompile Include="IRenderable.cpp" />
     <ClCompile Include="json.cpp" />
     <ClCompile Include="mersenne.cpp" />
-    <ClCompile Include="NetworkTransform.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
-    <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="SoundAsset.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -227,7 +225,6 @@
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="randomc.h" />
     <ClInclude Include="RenderSystem.h" />
-    <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="SoundAsset.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
